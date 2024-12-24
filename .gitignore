@@ -3,4 +3,5 @@
 *.so
 *.a
 *.tar.gz
-
+*.db
+data

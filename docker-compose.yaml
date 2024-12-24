@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+
+        our-wedding-rsvp:
+                build: .
+                container_name: our-wedding-rsvp
+                ports:  
+                        - "8080:8080/tcp"
+                volumes:
+                        - ./data:/workspace/data
+                tty: true
+                restart: always
+                

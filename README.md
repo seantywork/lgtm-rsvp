@@ -1,1 +1,1 @@
-# my-wedding-rsvp
+# our-wedding-rsvp

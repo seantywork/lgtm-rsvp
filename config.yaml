@@ -1,2 +1,6 @@
+test: -1
 serveAddr: "0.0.0.0:8080"
 dbAddr: "data/rsvp.db"
+admin:
+  id: sample
+  pw: sample

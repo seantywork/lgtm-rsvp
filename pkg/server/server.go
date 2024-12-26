@@ -26,7 +26,7 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 
 func configureServer(e *gin.Engine) error {
 
-	e.LoadHTMLGlob("view/**/*")
+	e.LoadHTMLGlob("view/*")
 
 	e.Static("/public", "./public")
 

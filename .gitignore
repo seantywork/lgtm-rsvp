@@ -5,3 +5,5 @@
 *.tar.gz
 *.db
 data
+.idea
+.DS_Store

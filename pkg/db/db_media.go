@@ -55,13 +55,15 @@ func DeleteMedia(media_key string) error {
 	return nil
 }
 
-func GetAssociateMediaKeysForEditorjsSrc(rawArticle []byte) ([]string, error) {
+func GetAssociateMediaKeysForEditorjsSrc(rawContent string) ([]string, error) {
 
 	var retlist []string
 
 	var editorjsSrc map[string]interface{}
 
-	err := json.Unmarshal(rawArticle, &editorjsSrc)
+	rawContentBytes := []byte(rawContent)
+
+	err := json.Unmarshal(rawContentBytes, &editorjsSrc)
 
 	if err != nil {
 

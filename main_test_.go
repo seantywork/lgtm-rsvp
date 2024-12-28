@@ -30,7 +30,13 @@ func test(tc int) error {
 
 func test_db() error {
 
-	err := pkgdb.OpenDB(pkgglob.G_CONF.Db.Addr, pkgglob.G_CONF.Db.InitFile)
+	err := pkgdb.OpenDB(pkgglob.G_CONF.Db.Addr)
+
+	if err != nil {
+		return err
+	}
+
+	err = pkgdb.Init(pkgglob.G_CONF.Db.InitFile)
 
 	if err != nil {
 		return err

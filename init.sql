@@ -1,6 +1,7 @@
 CREATE TABLE admin (
     admin_id INTEGER PRIMARY KEY,
     id TEXT,
+    session_id TEXT,
     pw TEXT
 );
 CREATE TABLE story (
@@ -8,12 +9,7 @@ CREATE TABLE story (
     id TEXT,
     title TEXT,
     date_marked TEXT
-    primary_media_id TEXT,
+    primary_media_name TEXT,
     content TEXT
 );
-CREATE TABLE media (
-    media_id INTEGER PRIMARY KEY,
-    id TEXT,
-    kind TEXT,
-    content BLOB
-)
+

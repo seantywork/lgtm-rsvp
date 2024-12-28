@@ -3,36 +3,21 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var _db *sql.DB
 
-func OpenDB(addr string, initfile string) error {
+var initiated bool = false
 
-	db, err := sql.Open("sqlite3", addr)
-
-	if err != nil {
-
-		return err
-	}
-
-	_db = db
-
-	err = runInitSql(initfile)
-
-	if err != nil {
-
-		_db.Close()
-
-		return fmt.Errorf("failed to run init sql: %v", err)
-	}
-
-	return nil
+type SqliteMaster struct {
+	TblName string
 }
 
-func Query(query string, args []any) (*sql.Rows, error) {
+func query(query string, args []any) (*sql.Rows, error) {
 
 	var empty_row *sql.Rows
 
@@ -48,7 +33,7 @@ func Query(query string, args []any) (*sql.Rows, error) {
 
 }
 
-func Exec(query string, args []any) error {
+func exec(query string, args []any) error {
 
 	result, err := _db.Exec(query, args[0:]...)
 
@@ -67,8 +52,147 @@ func Exec(query string, args []any) error {
 
 }
 
-func runInitSql(initfile string) error {
+func OpenDB(addr string) error {
+
+	db, err := sql.Open("sqlite3", addr)
+
+	if err != nil {
+
+		return err
+	}
+
+	_db = db
+
+	return nil
+}
+
+func Init(initfile string) error {
+
+	tables := make([]SqliteMaster, 0)
+
+	q := `
+	
+	SELECT 
+		tbl_name 
+	FROM 
+		sqlite_master 
+	WHERE 
+		type='table'
+	`
+
+	a := []any{}
+
+	res, err := query(q, a)
+
+	if err != nil {
+
+		return fmt.Errorf("failed to get tables: %v", err)
+	}
+
+	defer res.Close()
+
+	for res.Next() {
+
+		t := SqliteMaster{}
+
+		err = res.Scan(&t.TblName)
+
+		if err != nil {
+
+			return fmt.Errorf("failed to read table record: %v", err)
+
+		}
+
+		tables = append(tables, t)
+
+	}
+
+	tlen := len(tables)
+
+	if tlen == 0 {
+		log.Printf("no tables found\n")
+
+		err = createFromInitSql(initfile)
+
+		if err != nil {
+
+			return fmt.Errorf("create from init sql: %v", err)
+		}
+
+		log.Printf("tables successfully created\n")
+
+	}
+
+	initiated = true
 
 	return nil
 
+}
+
+func createFromInitSql(initfile string) error {
+
+	file_b, err := os.ReadFile(initfile)
+
+	if err != nil {
+
+		return fmt.Errorf("failed to read initfile: %v", err)
+	}
+
+	q := string(file_b)
+
+	a := []any{}
+
+	err = exec(q, a)
+
+	if err != nil {
+		return fmt.Errorf("failed to init: %v", err)
+	}
+
+	tables := make([]SqliteMaster, 0)
+
+	q = `
+	
+	SELECT 
+		tbl_name 
+	FROM 
+		sqlite_master 
+	WHERE 
+		type='table'
+	`
+
+	a = []any{}
+
+	res, err := query(q, a)
+
+	if err != nil {
+
+		return fmt.Errorf("failed to get tables: %v", err)
+	}
+
+	defer res.Close()
+
+	for res.Next() {
+
+		t := SqliteMaster{}
+
+		err = res.Scan(&t.TblName)
+
+		if err != nil {
+
+			return fmt.Errorf("failed to read table record: %v", err)
+
+		}
+
+		tables = append(tables, t)
+
+	}
+
+	tlen := len(tables)
+
+	if tlen == 0 {
+
+		return fmt.Errorf("failed to assert tables")
+	}
+
+	return nil
 }

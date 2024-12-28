@@ -32,5 +32,11 @@ func configureServer(e *gin.Engine) error {
 
 	e.GET("/", getIndex)
 
+	e.GET("/signin", getSignin)
+
+	e.GET("/story/r/:storyId", getRead)
+
+	e.GET("/story/w", getWrite)
+
 	return nil
 }

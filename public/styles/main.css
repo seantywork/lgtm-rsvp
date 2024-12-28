@@ -6465,7 +6465,7 @@ button.bg-danger:focus {
 }
 
 .bg-gift {
-    background: url("../images/gift/gift-background.png") no-repeat;
+    background: url("/public/images/gift/gift-background.png") no-repeat;
     width: 100%;
     background-size: cover;
 }
@@ -9756,7 +9756,7 @@ body {
 
 /* Home Page Style */
 .ww-home-page {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("../images/main-background.jpeg") no-repeat center center;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("/public/images/main-background.jpeg") no-repeat center center;
     background-size: cover;
     background-position: 50%;
     height: 100vh;

@@ -5,8 +5,9 @@ type Config struct {
 	ServeAddr string `yaml:"serveAddr"`
 	DbAddr    string `yaml:"dbAddr"`
 	Admin     struct {
-		Id string `yaml:"id"`
-		Pw string `yaml:"pw"`
+		UseOauth2 bool   `yaml:"useOauth2"`
+		Id        string `yaml:"id"`
+		Pw        string `yaml:"pw"`
 	} `yaml:"admin"`
 }
 

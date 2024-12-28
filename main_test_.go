@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	pkgdb "our-wedding-rsvp/pkg/db"
+	pkgglob "our-wedding-rsvp/pkg/glob"
 )
 
 func test(tc int) error {
@@ -11,6 +13,8 @@ func test(tc int) error {
 	switch tc {
 
 	case 0:
+
+		reterr = test_db()
 
 		break
 
@@ -22,4 +26,15 @@ func test(tc int) error {
 
 	return reterr
 
+}
+
+func test_db() error {
+
+	err := pkgdb.OpenDB(pkgglob.G_CONF.Db.Addr, pkgglob.G_CONF.Db.InitFile)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

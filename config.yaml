@@ -1,7 +1,9 @@
-test: -1
+test: 0
 serveAddr: "0.0.0.0:8080"
-dbAddr: "data/rsvp.db"
+db: 
+  addr: "data/rsvp.db"
+  initFile: "init.sql"
 admin:
   useOauth2: false
-  id: sample
+  id: seantywork@gmail.com
   pw: sample

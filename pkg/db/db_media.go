@@ -1,11 +1,9 @@
 package db
 
 import (
-	"encoding/json"
 	"fmt"
 	"mime/multipart"
 	"os"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -53,83 +51,4 @@ func DeleteMedia(media_key string) error {
 	}
 
 	return nil
-}
-
-func GetAssociateMediaKeysForEditorjsSrc(rawContent string) ([]string, error) {
-
-	var retlist []string
-
-	var editorjsSrc map[string]interface{}
-
-	rawContentBytes := []byte(rawContent)
-
-	err := json.Unmarshal(rawContentBytes, &editorjsSrc)
-
-	if err != nil {
-
-		return nil, fmt.Errorf("failed to unmarshal: %s", err.Error())
-
-	}
-
-	blocks, okay := editorjsSrc["blocks"]
-
-	if !okay {
-
-		return nil, fmt.Errorf("invalid format: %s", "no blocks")
-	}
-
-	blocksList := blocks.([]interface{})
-
-	blocksLen := len(blocksList)
-
-	for i := 0; i < blocksLen; i++ {
-
-		blockObj := blocksList[i].(map[string]interface{})
-
-		objType, okay := blockObj["type"]
-
-		if !okay {
-			continue
-		}
-
-		if objType != "image" {
-			continue
-		}
-
-		objData, okay := blockObj["data"]
-
-		if !okay {
-			continue
-		}
-
-		objFields := objData.(map[string]interface{})
-
-		fileField, okay := objFields["file"]
-
-		if !okay {
-			continue
-		}
-
-		targetProps := fileField.(map[string]interface{})
-
-		urlTarget, okay := targetProps["url"]
-
-		if !okay {
-			continue
-		}
-
-		target := urlTarget.(string)
-
-		pathList := strings.Split(target, "/")
-
-		keyExt := pathList[len(pathList)-1]
-
-		keyExtList := strings.Split(keyExt, ".")
-
-		key := keyExtList[0]
-
-		retlist = append(retlist, key)
-	}
-
-	return retlist, nil
 }

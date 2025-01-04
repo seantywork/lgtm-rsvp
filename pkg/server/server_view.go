@@ -1,9 +1,14 @@
 package server
 
 import (
+	"log"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 
 	pkgauth "our-wedding-rsvp/pkg/auth"
+	pkgdb "our-wedding-rsvp/pkg/db"
+	pkgserverapi "our-wedding-rsvp/pkg/server/api"
 )
 
 func getIndex(c *gin.Context) {
@@ -27,15 +32,89 @@ func getSignin(c *gin.Context) {
 
 func getRead(c *gin.Context) {
 
-	c.HTML(200, "read.html", gin.H{})
+	watchId := c.Param("storyId")
+
+	if !pkgauth.VerifyDefaultValue(watchId) {
+
+		log.Printf("get article: illegal: %s\n", watchId)
+
+		c.JSON(http.StatusBadRequest, pkgserverapi.SERVER_RESP{Status: "error", Reply: "invalid format"})
+
+		return
+
+	}
+	c.HTML(200, "read.html", gin.H{
+		"article_code": watchId,
+	})
+
 }
 
 func getWrite(c *gin.Context) {
 
-	if !pkgauth.Is0(c) {
+	if !pkgauth.Is0(c, nil, nil) {
 		c.HTML(200, "index.html", gin.H{})
 		return
 	}
 
 	c.HTML(200, "write.html", gin.H{})
+}
+
+func Logout(c *gin.Context) {
+
+	userId := ""
+
+	sessionId := ""
+
+	if !pkgauth.Is0(c, &userId, &sessionId) {
+
+		log.Printf("logout: not logged in\n")
+
+		c.JSON(http.StatusBadRequest, pkgserverapi.SERVER_RESP{Status: "error", Reply: "not logged in"})
+
+		return
+
+	}
+
+	err := pkgdb.SetAdminSessionId(userId, sessionId, false)
+
+	if err != nil {
+
+		log.Printf("logout: error: %v\n", err)
+
+		c.JSON(http.StatusBadRequest, pkgserverapi.SERVER_RESP{Status: "error", Reply: "invalid"})
+
+		return
+
+	}
+
+	c.JSON(http.StatusOK, pkgserverapi.SERVER_RESP{Status: "success", Reply: "logged out"})
+
+}
+
+func DeleteStory(c *gin.Context) {
+
+	if !pkgauth.Is0(c, nil, nil) {
+
+		log.Printf("delete: not allowed\n")
+
+		c.JSON(http.StatusBadRequest, pkgserverapi.SERVER_RESP{Status: "error", Reply: "invalid"})
+
+		return
+
+	}
+
+	storyId := c.Param("storyId")
+
+	err := pkgdb.DeleteStoryById(storyId)
+
+	if err != nil {
+		log.Printf("delete: error: %v\n", err)
+
+		c.JSON(http.StatusInternalServerError, pkgserverapi.SERVER_RESP{Status: "error", Reply: "internal error"})
+
+		return
+	}
+
+	c.JSON(http.StatusOK, pkgserverapi.SERVER_RESP{Status: "success", Reply: "deleted"})
+
 }

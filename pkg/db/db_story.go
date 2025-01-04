@@ -1,6 +1,9 @@
 package db
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 type Story struct {
 	StoryId          int
@@ -168,13 +171,20 @@ func GetStoryByTitle(title string) (*Story, error) {
 
 }
 
-func DeleteStoryByTitle(title string) (*Story, error) {
+func DeleteStoryById(id string) error {
 
-	story, err := GetStoryByTitle(title)
+	story, err := GetStoryById(id)
 
 	if err != nil {
 
-		return nil, fmt.Errorf("failed to get story by title")
+		return fmt.Errorf("failed to get story by id")
+	}
+
+	keys, err := GetAssociateMediaKeysForEditorjsSrc([]byte(story.Content))
+
+	if err != nil {
+
+		return fmt.Errorf("failed to get story media keys by id: %v", err)
 	}
 
 	q := `
@@ -193,9 +203,69 @@ func DeleteStoryByTitle(title string) (*Story, error) {
 	err = exec(q, a)
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to delete story record")
+		return fmt.Errorf("failed to delete story record")
 	}
 
-	return story, nil
+	keysLen := len(keys)
+
+	for i := 0; i < keysLen; i++ {
+
+		err = DeleteMedia(keys[i])
+
+		if err != nil {
+
+			log.Printf("failed to delete media key: %s\n", err.Error())
+		}
+
+	}
+
+	return nil
+
+}
+
+func GetAllStory() ([]Story, error) {
+
+	stories := []Story{}
+
+	q := `
+	
+	SELECT 
+		*
+	FROM
+		story
+	`
+
+	a := []any{}
+
+	res, err := query(q, a)
+
+	if err != nil {
+
+		return nil, fmt.Errorf("failed to get all story: %v", err)
+	}
+
+	defer res.Close()
+
+	for res.Next() {
+
+		story := Story{}
+
+		err = res.Scan(
+
+			&story.Id,
+			&story.Title,
+			&story.DateMarked,
+			&story.PrimaryMediaName,
+		)
+
+		if err != nil {
+			return nil, fmt.Errorf("failed to get story record: %v", err)
+		}
+
+		stories = append(stories, story)
+
+	}
+
+	return stories, nil
 
 }

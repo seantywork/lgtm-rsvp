@@ -114,7 +114,7 @@ var editor = new EditorJS({
                   success: 1,
                   file: {
 
-                    url: '/api/media/c/' + data.reply,
+                    url: '/api/media/download/c/' + data.reply,
               
                   }
                 }

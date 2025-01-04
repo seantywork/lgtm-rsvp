@@ -36,13 +36,29 @@ func configureServer(e *gin.Engine) error {
 
 	e.GET("/signin", getSignin)
 
-	e.GET("/api/oauth2/google/signin", pkgserverapi.OauthGoogleLogin)
-
-	e.GET("/oauth2/google/callback", pkgserverapi.OauthGoogleCallback)
+	e.GET("/signout", Logout)
 
 	e.GET("/story/r/:storyId", getRead)
 
 	e.GET("/story/w", getWrite)
+
+	e.GET("/story/w/:storyId/delete", DeleteStory)
+
+	e.GET("/api/oauth2/google/signin", pkgserverapi.OauthGoogleLogin)
+
+	e.GET("/oauth2/google/callback", pkgserverapi.OauthGoogleCallback)
+
+	e.POST("/api/signin", pkgserverapi.Login)
+
+	e.POST("/api/story/upload", pkgserverapi.UploadStory)
+
+	e.POST("/api/story/download/:storyId", pkgserverapi.DownloadStoryById)
+
+	e.POST("/api/media/upload", pkgserverapi.UploadStoryMedia)
+
+	e.GET("/api/media/download/c/:mediaId", pkgserverapi.DownloadStoryMediaById)
+
+	e.GET("/api/story/list", pkgserverapi.GetStoryList)
 
 	return nil
 }

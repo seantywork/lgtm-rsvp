@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 
@@ -86,7 +87,7 @@ func GenerateGoogleOauthConfig() *oauth2.Config {
 		google_oauth_config.RedirectURL = OAUTH_JSON.Web.RedirectUris[1]
 	}
 
-	fmt.Println(google_oauth_config.RedirectURL)
+	log.Println(google_oauth_config.RedirectURL)
 
 	return google_oauth_config
 

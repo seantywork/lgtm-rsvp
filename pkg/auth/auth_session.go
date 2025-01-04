@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Is0(c *gin.Context) bool {
+func Is0(c *gin.Context, userId *string, sessionId *string) bool {
 
 	session := sessions.Default(c)
 
@@ -38,6 +38,15 @@ func Is0(c *gin.Context) bool {
 
 	if s == nil {
 		return false
+	}
+
+	if userId != nil {
+		*userId = s.Id
+	}
+
+	if sessionId != nil {
+
+		*sessionId = session_id
 	}
 
 	return true

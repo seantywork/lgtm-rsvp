@@ -36,7 +36,7 @@ func test_db() error {
 		return err
 	}
 
-	err = pkgdb.Init(pkgglob.G_CONF.Db.InitFile)
+	err = pkgdb.Init(pkgglob.G_CONF.Db.InitFile, pkgglob.G_CONF.Admin.Id, pkgglob.G_CONF.Admin.Pw)
 
 	if err != nil {
 		return err

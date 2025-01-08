@@ -1,19 +1,30 @@
 package server
 
 import (
+	pkgserverapi "our-wedding-rsvp/pkg/server/api"
+
+	pkgauth "our-wedding-rsvp/pkg/auth"
+	pkgglob "our-wedding-rsvp/pkg/glob"
+
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-
-	pkgserverapi "our-wedding-rsvp/pkg/server/api"
 )
 
 func CreateServerFromConfig() (*gin.Engine, error) {
 
 	genserver := gin.Default()
 
-	store := sessions.NewCookieStore([]byte("RSVP"))
+	store := sessions.NewCookieStore([]byte(pkgglob.G_CONF.SessionStore))
 
-	genserver.Use(sessions.Sessions("RSVP", store))
+	so := sessions.Options{
+		Path: "/",
+	}
+
+	store.Options(so)
+
+	genserver.Use(sessions.Sessions(pkgglob.G_CONF.SessionStore, store))
+
+	pkgauth.USE_OAUTH2 = pkgglob.G_CONF.Admin.UseOauth2
 
 	err := configureServer(genserver)
 

@@ -3,6 +3,7 @@ package auth
 import (
 	"log"
 	pkgdb "our-wedding-rsvp/pkg/db"
+	pkgglob "our-wedding-rsvp/pkg/glob"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ func Is0(c *gin.Context, userId *string, sessionId *string) bool {
 
 	var session_id string
 
-	v := session.Get("RSVP")
+	v := session.Get(pkgglob.G_CONF.SessionStore)
 
 	if v == nil {
 		return false

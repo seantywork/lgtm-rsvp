@@ -19,6 +19,11 @@ func VerifyDefaultValue(raw string) bool {
 
 		} else if c == '-' {
 
+			continue
+		} else if c == '@' {
+			continue
+		} else if c == '.' {
+			continue
 		} else {
 
 			return false

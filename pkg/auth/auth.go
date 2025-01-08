@@ -2,8 +2,11 @@ package auth
 
 import (
 	"fmt"
+	"log"
 
 	pkgdb "our-wedding-rsvp/pkg/db"
+
+	pkgglob "our-wedding-rsvp/pkg/glob"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -23,8 +26,12 @@ func GenerateStateAuthCookie(c *gin.Context) string {
 
 	session := sessions.Default(c)
 
-	session.Set("RSVP", state)
-	session.Save()
+	session.Set(pkgglob.G_CONF.SessionStore, state)
+	err := session.Save()
+
+	if err != nil {
+		log.Printf("cookie gen failed: %s\n", err.Error())
+	}
 
 	return state
 }

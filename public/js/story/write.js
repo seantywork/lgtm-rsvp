@@ -1,7 +1,10 @@
 
 ARTICLE_INFO = {
     "title": "",
-    "content": ""
+    "content": "",
+    "dateMarked": "",
+    "primaryMediaName":""
+
 }
 
 
@@ -187,7 +190,14 @@ var editor = new EditorJS({
           type: "header",
           data: {
             text: "Title",
-            level: 2
+            level: 1
+          }
+        },
+        {
+          type: "header",
+          data: {
+            text: "[0000-00]",
+            level: 3
           }
         },
         {
@@ -224,6 +234,17 @@ saveButton.addEventListener('click', async function () {
 
     a_info.title = savedData.blocks[0].data.text
 
+    a_info.dateMarked = savedData.blocks[1].data.text
+
+    blen = savedData.blocks.len 
+
+    for (let i = 0 ; i < blen; i ++){
+
+
+
+
+    }
+
     a_info.content = JSON.stringify(savedData)
 
     let req = {
@@ -248,8 +269,6 @@ saveButton.addEventListener('click', async function () {
     }
 
     alert("successfully submitted: " + result.reply)
-
-    await getArticleList()
 
 });
 

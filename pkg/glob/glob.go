@@ -1,9 +1,10 @@
 package glob
 
 type Config struct {
-	Test      int    `yaml:"test"`
-	ServeAddr string `yaml:"serveAddr"`
-	Db        struct {
+	Test         int    `yaml:"test"`
+	ServeAddr    string `yaml:"serveAddr"`
+	SessionStore string `yaml:"sessionStore"`
+	Db           struct {
 		Addr     string `yaml:"addr"`
 		InitFile string `yaml:"initFile"`
 	} `yaml:"db"`

@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"os"
+	pkgdb "our-wedding-rsvp/pkg/db"
 	pkgglob "our-wedding-rsvp/pkg/glob"
-
 	pkgserver "our-wedding-rsvp/pkg/server"
 )
 
@@ -48,6 +48,25 @@ func main() {
 
 		os.Exit(0)
 
+	}
+
+	err = pkgdb.OpenDB(pkgglob.G_CONF.Db.Addr)
+
+	if err != nil {
+
+		log.Printf("failed to open db: %s\n", err.Error())
+
+		os.Exit(-1)
+
+	}
+
+	err = pkgdb.Init(pkgglob.G_CONF.Db.InitFile, pkgglob.G_CONF.Admin.Id, pkgglob.G_CONF.Admin.Pw)
+
+	if err != nil {
+
+		log.Printf("failed to open db: %s\n", err.Error())
+
+		os.Exit(-1)
 	}
 
 	if err := srv.Run(pkgglob.G_CONF.ServeAddr); err != nil {

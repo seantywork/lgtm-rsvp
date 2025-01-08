@@ -66,9 +66,11 @@ func OpenDB(addr string) error {
 	return nil
 }
 
-func Init(initfile string) error {
+func Init(initfile string, adminId string, adminPw string) error {
 
 	tables := make([]SqliteMaster, 0)
+
+	admins := make([]Admin, 0)
 
 	q := `
 	
@@ -120,6 +122,60 @@ func Init(initfile string) error {
 		}
 
 		log.Printf("tables successfully created\n")
+
+	}
+
+	q = `
+	
+	SELECT
+		admin_id
+	FROM
+		admin
+	WHERE
+		id = ?
+
+	`
+	a = []any{
+		adminId,
+	}
+
+	res, err = query(q, a)
+
+	if err != nil {
+
+		return fmt.Errorf("failed to get tables: %v", err)
+	}
+
+	for res.Next() {
+
+		a := Admin{}
+
+		err = res.Scan(&a.AdminId)
+
+		if err != nil {
+
+			return fmt.Errorf("failed to read admin record: %v", err)
+
+		}
+
+		admins = append(admins, a)
+
+	}
+
+	alen := len(admins)
+
+	if alen == 0 {
+
+		log.Printf("no admins found\n")
+
+		err = addAdmin(adminId, adminPw)
+
+		if err != nil {
+
+			return fmt.Errorf("add admin: %v", err)
+		}
+
+		log.Printf("admin successfully added\n")
 
 	}
 
@@ -192,6 +248,83 @@ func createFromInitSql(initfile string) error {
 	if tlen == 0 {
 
 		return fmt.Errorf("failed to assert tables")
+	}
+
+	return nil
+}
+
+func addAdmin(id string, pw string) error {
+
+	admins := make([]Admin, 0)
+
+	q := `
+	
+	INSERT INTO admin (
+		id,
+		session_id,
+		pw
+	)
+	VALUES (
+		?,
+		NULL,
+		?
+	)
+
+	`
+
+	a := []any{
+		id,
+		pw,
+	}
+
+	err := exec(q, a)
+
+	if err != nil {
+		return fmt.Errorf("failed to add admin: %v", err)
+	}
+
+	q = `
+	
+	SELECT
+		admin_id
+	FROM
+		admin
+	WHERE
+		id = ?
+
+	`
+	a = []any{
+		id,
+	}
+
+	res, err := query(q, a)
+
+	if err != nil {
+
+		return fmt.Errorf("failed to add admins: %v", err)
+	}
+
+	for res.Next() {
+
+		a := Admin{}
+
+		err = res.Scan(&a.AdminId)
+
+		if err != nil {
+
+			return fmt.Errorf("failed to read admin record: %v", err)
+
+		}
+
+		admins = append(admins, a)
+
+	}
+
+	alen := len(admins)
+
+	if alen == 0 {
+
+		return fmt.Errorf("failed to add admin: 0")
 	}
 
 	return nil

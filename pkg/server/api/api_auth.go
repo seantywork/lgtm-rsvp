@@ -7,6 +7,7 @@ import (
 
 	pkgauth "our-wedding-rsvp/pkg/auth"
 	pkgdb "our-wedding-rsvp/pkg/db"
+	pkgglob "our-wedding-rsvp/pkg/glob"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -53,7 +54,7 @@ func OauthGoogleCallback(c *gin.Context) {
 
 	var session_id string
 
-	v := session.Get("RSVP")
+	v := session.Get(pkgglob.G_CONF.SessionStore)
 
 	if v == nil {
 		log.Printf("access auth failed: %s\n", "session id not found")

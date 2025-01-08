@@ -10,7 +10,7 @@ async function getArticleContent(){
       return
   }
 
-  let resp = await fetch(`/api/story/r/${contentId}`, {
+  let resp = await fetch(`/api/story/download/${contentId}`, {
       method: "GET"
   })
 
@@ -238,7 +238,7 @@ async function loadArticleContent(){
 
 (async function(){
 
-  await loadArticleContent()
+  await getArticleContent()
 
 })()
 

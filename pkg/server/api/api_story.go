@@ -188,6 +188,8 @@ func UploadStoryMedia(c *gin.Context) {
 
 	file_name, _ := pkgutils.GetRandomHex(32)
 
+	file_name = file_name + "." + mediaExt
+
 	err := pkgdb.UploadMedia(c, file, file_name)
 
 	if err != nil {
@@ -200,7 +202,7 @@ func UploadStoryMedia(c *gin.Context) {
 
 	}
 
-	client_file_name := file_name + "." + mediaExt
+	client_file_name := file_name
 
 	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: client_file_name})
 

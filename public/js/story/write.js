@@ -196,7 +196,7 @@ var editor = new EditorJS({
         {
           type: "header",
           data: {
-            text: "[0000-00]",
+            text: "0000-00",
             level: 3
           }
         },
@@ -222,8 +222,7 @@ var editor = new EditorJS({
 const saveButton = document.getElementById('saveButton');
 
 
-const toggleReadOnlyButton = document.getElementById('toggleReadOnlyButton');
-const readOnlyIndicator = document.getElementById('readonly-state');
+
 
 
 saveButton.addEventListener('click', async function () {
@@ -236,14 +235,35 @@ saveButton.addEventListener('click', async function () {
 
     a_info.dateMarked = savedData.blocks[1].data.text
 
-    blen = savedData.blocks.len 
+    blen = savedData.blocks.length 
+
+    let imagePath = ""
 
     for (let i = 0 ; i < blen; i ++){
 
 
+      let b = savedData.blocks[i]
 
+      if(b.type == "image"){
+
+        imagePath = b.data.file.url
+
+        break
+
+      } else {
+        continue
+      }
 
     }
+
+    if(imagePath == ""){
+      alert("must add primary image")
+
+      return
+    }
+
+    a_info.primaryMediaName = imagePath
+
 
     a_info.content = JSON.stringify(savedData)
 
@@ -271,10 +291,3 @@ saveButton.addEventListener('click', async function () {
     alert("successfully submitted: " + result.reply)
 
 });
-
-toggleReadOnlyButton.addEventListener('click', async () => {
-  const readOnlyState = await editor.readOnly.toggle();
-
-  readOnlyIndicator.textContent = readOnlyState ? 'On' : 'Off';
-});
-

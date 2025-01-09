@@ -230,7 +230,10 @@ func GetAllStory() ([]Story, error) {
 	q := `
 	
 	SELECT 
-		*
+		id,
+		title,
+		date_marked,
+		primary_media_name
 	FROM
 		story
 	`

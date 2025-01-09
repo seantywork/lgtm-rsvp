@@ -63,7 +63,7 @@ func configureServer(e *gin.Engine) error {
 
 	e.POST("/api/story/upload", pkgserverapi.UploadStory)
 
-	e.POST("/api/story/download/:storyId", pkgserverapi.DownloadStoryById)
+	e.GET("/api/story/download/:storyId", pkgserverapi.DownloadStoryById)
 
 	e.POST("/api/media/upload", pkgserverapi.UploadStoryMedia)
 

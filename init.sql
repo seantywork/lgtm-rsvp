@@ -8,7 +8,7 @@ CREATE TABLE story (
     story_id INTEGER PRIMARY KEY,
     id TEXT,
     title TEXT,
-    date_marked TEXT
+    date_marked TEXT,
     primary_media_name TEXT,
     content TEXT
 );

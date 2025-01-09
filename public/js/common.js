@@ -84,11 +84,87 @@ async function getArticleList(){
     }
 
 
-    let contentReader = document.getElementById("article-reader")
+    let storyList = document.getElementById("story-columns")
 
     let contentEntry = JSON.parse(result.reply)
     
-    console.log(contentEntry)
+
+    let entryLen = contentEntry.length
+
+    let orderedEntry = []
+
+    for(let i = 0 ; i < entryLen; i++){
+
+        let len = contentEntry.length
+
+        let idx = 0
+        let num = 999999
+
+        for(let j = 0; j < len; j++){
+
+            let entry = contentEntry[j]
+
+            let dateMarked = entry.dateMarked
+
+            let dateStr = dateMarked.replace("-", "")
+
+            let dateNum = parseInt(dateStr)
+
+            if(dateNum < num){
+                idx = j
+                num = dateNum
+            }
+        }
+
+        let newEntry = []
+
+        for(let j = 0; j < len; j++){
+
+            if(j == idx){
+                orderedEntry.push(contentEntry[j])
+                continue
+            }
+
+            newEntry.push(contentEntry[j])
+        }
+
+        contentEntry = newEntry
+
+    }
+
+    console.log(orderedEntry)
+
+    storyList.innerHTML = ""
+
+    for(let i = 0; i < entryLen; i++){
+
+        let oe = orderedEntry[i]
+
+        let content = `
+            <div class="gift">
+                <img alt="와인셀러" class="img-fluid gift-img gift-selected" src="${oe.primaryMediaName}"/>
+                <div class="btn-group gift-btn-group" role="group">
+                    <button class="btn btn-default gift-btn"
+                            onclick="window.open('/story/r/${oe.id}')">
+                        ${oe.dateMarked}</button>
+
+                </div>
+            </div>        
+        
+        `
+
+        storyList.innerHTML += content
+
+
+    }
   
 }
-  
+
+/*
+                   <button class="btn btn-default gift-btn"
+                            onclick="window.open('/story/r/${oe.id}')">
+                        <i class="fa fa-search"></i></button>                    
+<button class="btn btn-default gift-btn gift-send" data-name="와인셀러"
+                            onclick="alert('다른분에게 예약된 선물입니다.');"><i
+                            class="fa fa-gift"></i></button>
+*/

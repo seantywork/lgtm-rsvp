@@ -26,7 +26,16 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 
 	pkgauth.USE_OAUTH2 = pkgglob.G_CONF.Admin.UseOauth2
 
-	err := configureServer(genserver)
+	pkgauth.InitAuth()
+
+	err := pkgserverapi.InitAPI()
+
+	if err != nil {
+
+		return nil, err
+	}
+
+	err = configureServer(genserver)
 
 	if err != nil {
 
@@ -49,6 +58,8 @@ func configureServer(e *gin.Engine) error {
 
 	e.GET("/signout", Logout)
 
+	e.GET("/comment", GetComment)
+
 	e.GET("/story/r/:storyId", getRead)
 
 	e.GET("/story/w", getWrite)
@@ -64,6 +75,12 @@ func configureServer(e *gin.Engine) error {
 	e.POST("/api/story/upload", pkgserverapi.UploadStory)
 
 	e.GET("/api/story/download/:storyId", pkgserverapi.DownloadStoryById)
+
+	e.GET("/api/comment/list", pkgserverapi.GetApprovedComments)
+
+	e.POST("/api/comment/register", pkgserverapi.RegisterComment)
+
+	e.GET("/api/comment/approve/:commentId", pkgserverapi.ApproveComment)
 
 	e.POST("/api/media/upload", pkgserverapi.UploadStoryMedia)
 

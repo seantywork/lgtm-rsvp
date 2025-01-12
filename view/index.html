@@ -55,32 +55,6 @@
             return result;
         }
 
-        $(document).ready(function () {
-
-            function getText(){
-                var result = null;
-                $.ajax( { url: "https://raw.githubusercontent.com/AndersonChoi/wedding-card/master/README.md",
-                        type: 'get',
-                        dataType: 'html',
-                        async: false,
-                        success: function(data) { result = data; }
-                    }
-                );
-                FileReady = true;
-                return result;
-            }
-            var markdown_source = getText();
-            var comment_contents = markdown_source.split("축하의 말")[1];
-
-            var md = new Remarkable();
-            $("#comments").append(md.render(comment_contents));
-
-            
-            if(findGetParameter('gift')=='false'){
-                $('#gifts').hide();
-            }
-        });
-
 
 
 
@@ -315,7 +289,7 @@
                 <div class="container">
                     <div class="col text-center">
                         <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">축하메시지</h2><br>
-                        <div id="comments"></div>
+                        <div id="comment-rows"></div>
                         <br>
                         <div class="row">
                             <div class="col text-center"><form action="https://github.com/AndersonChoi/wedding-card/blob/master/README.md">
@@ -382,6 +356,8 @@
 (async function(){
 
     await getArticleList()
+
+    await getCommentList()
   
 })()
 </script>

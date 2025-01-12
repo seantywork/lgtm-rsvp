@@ -72,6 +72,8 @@
             var markdown_source = getText();
             var comment_contents = markdown_source.split("축하의 말")[1];
 
+
+
             var md = new Remarkable();
             $("#comments").append(md.render(comment_contents));
 

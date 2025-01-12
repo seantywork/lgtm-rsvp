@@ -118,3 +118,8 @@ func DeleteStory(c *gin.Context) {
 	c.JSON(http.StatusOK, pkgserverapi.SERVER_RESP{Status: "success", Reply: "deleted"})
 
 }
+
+func GetComment(c *gin.Context) {
+
+	c.HTML(200, "comment.html", gin.H{})
+}

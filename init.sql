@@ -12,4 +12,12 @@ CREATE TABLE story (
     primary_media_name TEXT,
     content TEXT
 );
+CREATE TABLE comment (
+    comment_id INTEGER PRIMARY KEY,
+    id TEXT,
+    title TEXT,
+    content TEXT,
+    timestamp_registered TEXT,
+    timestamp_approved TEXT
+);
 

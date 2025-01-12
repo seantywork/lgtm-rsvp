@@ -3,6 +3,7 @@ package glob
 type Config struct {
 	Test         int    `yaml:"test"`
 	ServeAddr    string `yaml:"serveAddr"`
+	Url          string `yaml:"url"`
 	SessionStore string `yaml:"sessionStore"`
 	Db           struct {
 		Addr     string `yaml:"addr"`

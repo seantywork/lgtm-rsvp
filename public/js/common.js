@@ -4,6 +4,13 @@ USER_LOGIN = {
     passphrase: ""
 }
 
+COMMENT = {
+
+    title: "",
+    content: ""
+}
+
+
 async function userSignin(){
 
 
@@ -168,3 +175,118 @@ async function getArticleList(){
                             onclick="alert('다른분에게 예약된 선물입니다.');"><i
                             class="fa fa-gift"></i></button>
 */
+
+
+async function registerComment(){
+
+
+    let c_title = document.getElementById("comment-title").value 
+
+    if(c_title == ""){
+  
+        alert("방명록 남기시는 분이 누구인지 알려주세요~")
+    
+        return
+    
+    }
+
+
+    let c_content = document.getElementById("comment-content").value 
+
+
+    if(c_content == ""){
+  
+        alert("방명록 내용을 채워주세요~")
+    
+        return
+    
+    }
+
+
+    let com = JSON.parse(JSON.stringify(COMMENT))
+
+    com.title = c_title
+    com.content = c_content
+
+    let req = {
+        data: JSON.stringify(com)
+    }
+
+    let commentSection = document.getElementById("comment-section")
+
+    commentSection.innerHTML = `
+    
+    <img src="/public/loading.gif"/>    
+
+    `
+
+
+
+    let resp = await fetch(`/api/comment/register`, {
+        body: JSON.stringify(req),
+        method: "POST"
+    })
+
+
+    let result = await resp.json()
+
+    if(result.status != "success"){
+
+        alert("방명록 남기기에 실패 했습니다, 다시 시도해주세요: ", + result.reply)
+
+        location.href = "/"
+
+        return
+    }
+
+
+    alert("방명록을 성공적으로 남겼습니다: " + result.reply + "\n관리자 확인 후 게시 예정입니다.\n감사합니다 ^^")
+
+    location.href = "/"
+
+}
+
+
+async function getCommentList(){
+
+
+    let resp = await fetch("/api/comment/list", {
+        method: "GET"
+    })
+
+    let result = await resp.json()
+
+    if(result.status != "success"){
+
+        alert("failed to get comment list")
+
+        return
+
+    }
+
+    let commentList = document.getElementById("comment-rows")
+
+    let commentEntry = JSON.parse(result.reply)
+
+    let md = new Remarkable();
+    let entrylen = commentEntry.length 
+
+    let rawText = ""
+    let mdRenderd = ""
+
+    console.log(commentEntry)
+
+    for(let i = 0 ; i < entrylen; i++){
+
+        let ce = commentEntry[i]
+
+        rawText += "### " + ce.title + "\n"
+        rawText += ce.content + "\n\n"
+
+    }
+
+    mdRenderd = md.render(rawText)
+
+    commentList.innerHTML = mdRenderd
+
+}

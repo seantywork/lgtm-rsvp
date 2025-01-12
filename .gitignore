@@ -8,3 +8,4 @@ data
 .idea
 .DS_Store
 oauth.json
+mail.json

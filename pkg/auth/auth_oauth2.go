@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	pkgglob "our-wedding-rsvp/pkg/glob"
 
@@ -78,7 +79,7 @@ func GetOAuthJSON() (OAuthJSON, error) {
 
 }
 
-func GenerateGoogleOauthConfig() *oauth2.Config {
+func GenerateGoogleOauthConfig() (*oauth2.Config, error) {
 
 	google_oauth_config := &oauth2.Config{
 		ClientID:     OAUTH_JSON.Web.ClientID,
@@ -87,11 +88,30 @@ func GenerateGoogleOauthConfig() *oauth2.Config {
 		Endpoint:     google.Endpoint,
 	}
 
-	google_oauth_config.RedirectURL = pkgglob.G_CONF.Url
+	found := 0
+
+	redirectlen := len(OAUTH_JSON.Web.RedirectUris)
+
+	for i := 0; i < redirectlen; i++ {
+
+		if strings.HasPrefix(OAUTH_JSON.Web.RedirectUris[i], pkgglob.G_CONF.Url) {
+
+			google_oauth_config.RedirectURL = OAUTH_JSON.Web.RedirectUris[i]
+
+			found = 1
+
+			break
+		}
+
+	}
+
+	if found == 0 {
+		return nil, fmt.Errorf("failed to find redirect url")
+	}
 
 	log.Println(google_oauth_config.RedirectURL)
 
-	return google_oauth_config
+	return google_oauth_config, nil
 
 }
 

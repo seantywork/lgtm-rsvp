@@ -84,7 +84,7 @@ func configureServer(e *gin.Engine) error {
 
 	e.GET("/api/oauth2/google/signin", pkgserverapi.OauthGoogleLogin)
 
-	e.GET("/oauth2/google/callback", pkgserverapi.OauthGoogleCallback)
+	e.GET("/api/oauth2/google/callback", pkgserverapi.OauthGoogleCallback)
 
 	e.POST("/api/signin", pkgserverapi.Login)
 

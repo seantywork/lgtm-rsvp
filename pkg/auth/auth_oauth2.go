@@ -54,7 +54,11 @@ func InitAuth() error {
 
 	OAUTH_JSON = oj
 
-	GoogleOauthConfig = GenerateGoogleOauthConfig()
+	GoogleOauthConfig, err = GenerateGoogleOauthConfig()
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

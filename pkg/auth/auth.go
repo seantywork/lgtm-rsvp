@@ -14,8 +14,6 @@ import (
 	pkgutils "our-wedding-rsvp/pkg/utils"
 )
 
-var DEBUG bool = false
-
 var USE_OAUTH2 bool = false
 
 var ADMINS = make(map[string]string)

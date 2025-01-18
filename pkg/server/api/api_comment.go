@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/smtp"
+	"os"
 	"time"
 
 	pkgauth "our-wedding-rsvp/pkg/auth"
@@ -17,9 +18,17 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 )
 
+var _comment chan CommentData
+
 type CommentInfo struct {
 	Title   string `json:"title"`
 	Content string `json:"content"`
+}
+
+type CommentData struct {
+	CommentId string
+	Title     string
+	Content   string
 }
 
 func GetApprovedComments(c *gin.Context) {
@@ -122,18 +131,6 @@ func RegisterComment(c *gin.Context) {
 
 	comment_id, _ := pkgutils.GetRandomHex(32)
 
-	err = sendMail(comment_id, title_san, content_san)
-
-	if err != nil {
-
-		log.Printf("c info comment: mail failed: %s\n", err.Error())
-
-		c.JSON(http.StatusInternalServerError, SERVER_RESP{Status: "error", Reply: "server error"})
-
-		return
-
-	}
-
 	err = pkgdb.RegisterComment(comment_id, title_san, content_san, timeRegistered)
 
 	if err != nil {
@@ -145,6 +142,14 @@ func RegisterComment(c *gin.Context) {
 		return
 
 	}
+
+	cdata := CommentData{
+		CommentId: comment_id,
+		Title:     title_san,
+		Content:   content_san,
+	}
+
+	_comment <- cdata
 
 	reply := fmt.Sprintf("%s", title_san)
 
@@ -185,9 +190,50 @@ func ApproveComment(c *gin.Context) {
 
 }
 
+func StartMailer(reterr chan error) {
+
+	_comment = make(chan CommentData)
+
+	f, err := os.OpenFile("mailerr.txt", os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
+
+	if err != nil {
+
+		reterr <- fmt.Errorf("failed to create mailerr.txt")
+
+		return
+	}
+
+	reterr <- nil
+
+	defer f.Close()
+
+	for {
+
+		c := <-_comment
+
+		err := sendMail(c.CommentId, c.Title, c.Content)
+
+		if err != nil {
+
+			msg := "==============================\n"
+			msg += "id: " + c.CommentId + "\n"
+			msg += "title: " + c.Title + "\n"
+			msg += "content: " + c.Content + "\n\n"
+
+			f.Write([]byte(msg))
+
+			log.Printf("send mail failed: %s\n", c.CommentId)
+		} else {
+			log.Printf("send mail success\n")
+		}
+
+	}
+
+}
+
 func sendMail(commentId string, title string, content string) error {
 
-	var pass = MAIL_JSON.Pass
+	var pass = API_JSON.MailPass
 	var from = "seantywork@gmail.com"
 	var to = "seantywork@gmail.com"
 	var smtpHost = "smtp.gmail.com"

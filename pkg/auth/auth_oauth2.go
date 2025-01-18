@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"os"
 
+	pkgglob "our-wedding-rsvp/pkg/glob"
+
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -38,34 +40,41 @@ var OAUTH_JSON OAuthJSON
 
 var GoogleOauthConfig *oauth2.Config
 
-func InitAuth() {
+func InitAuth() error {
 
 	if !USE_OAUTH2 {
-		return
+		return nil
 	}
-	OAUTH_JSON = GetOAuthJSON()
+	oj, err := GetOAuthJSON()
+
+	if err != nil {
+		return err
+	}
+
+	OAUTH_JSON = oj
 
 	GoogleOauthConfig = GenerateGoogleOauthConfig()
 
+	return nil
 }
 
-func GetOAuthJSON() OAuthJSON {
+func GetOAuthJSON() (OAuthJSON, error) {
 
 	var cj OAuthJSON
 
 	file_byte, err := os.ReadFile("oauth.json")
 
 	if err != nil {
-		panic(err)
+		return cj, fmt.Errorf("failed to read: oauth.json: %s", err.Error())
 	}
 
 	err = json.Unmarshal(file_byte, &cj)
 
 	if err != nil {
-		panic(err)
+		return cj, fmt.Errorf("failed to unmarshal oauth json: %s", err.Error())
 	}
 
-	return cj
+	return cj, nil
 
 }
 
@@ -78,14 +87,7 @@ func GenerateGoogleOauthConfig() *oauth2.Config {
 		Endpoint:     google.Endpoint,
 	}
 
-	if DEBUG {
-
-		google_oauth_config.RedirectURL = OAUTH_JSON.Web.RedirectUris[0]
-
-	} else {
-
-		google_oauth_config.RedirectURL = OAUTH_JSON.Web.RedirectUris[1]
-	}
+	google_oauth_config.RedirectURL = pkgglob.G_CONF.Url
 
 	log.Println(google_oauth_config.RedirectURL)
 

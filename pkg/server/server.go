@@ -26,11 +26,27 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 
 	pkgauth.USE_OAUTH2 = pkgglob.G_CONF.Admin.UseOauth2
 
-	pkgauth.InitAuth()
-
-	err := pkgserverapi.InitAPI()
+	err := pkgauth.InitAuth()
 
 	if err != nil {
+
+		return nil, err
+	}
+
+	err = pkgserverapi.InitAPI()
+
+	if err != nil {
+
+		return nil, err
+	}
+
+	reterr := make(chan error)
+
+	go pkgserverapi.StartMailer(reterr)
+
+	re := <-reterr
+
+	if re != nil {
 
 		return nil, err
 	}
@@ -87,6 +103,8 @@ func configureServer(e *gin.Engine) error {
 	e.GET("/api/media/download/c/:mediaId", pkgserverapi.DownloadStoryMediaById)
 
 	e.GET("/api/story/list", pkgserverapi.GetStoryList)
+
+	e.GET("/api/appkey", pkgserverapi.GetAppKey)
 
 	return nil
 }

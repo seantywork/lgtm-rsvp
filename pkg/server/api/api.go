@@ -3,7 +3,10 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 type CLIENT_REQ struct {
@@ -15,22 +18,23 @@ type SERVER_RESP struct {
 	Reply  string `json:"reply"`
 }
 
-type MailJSON struct {
-	Pass string `json:"pass"`
+type ApiJSON struct {
+	AppKey   string `json:"app_key"`
+	MailPass string `json:"mail_pass"`
 }
 
-var MAIL_JSON MailJSON
+var API_JSON ApiJSON
 
 func InitAPI() error {
 
-	fileb, err := os.ReadFile("mail.json")
+	fileb, err := os.ReadFile("api.json")
 
 	if err != nil {
 
 		return fmt.Errorf("failed to init api: %s", err.Error())
 	}
 
-	mj := MailJSON{}
+	mj := ApiJSON{}
 
 	err = json.Unmarshal(fileb, &mj)
 
@@ -39,7 +43,14 @@ func InitAPI() error {
 		return fmt.Errorf("failed to init api: unmarshal: %s", err.Error())
 	}
 
-	MAIL_JSON = mj
+	API_JSON = mj
 
 	return nil
+}
+
+func GetAppKey(c *gin.Context) {
+
+	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: API_JSON.AppKey})
+
+	return
 }

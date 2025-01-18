@@ -256,14 +256,11 @@
                 <div class="form-group">
                     <div class="col-md-12">
                         <div class="my-3 text-center">
-                            <a href="http://naver.me/5pTy3HCa">
-                                <img alt="naver-map" class="map-icon" id="naver-map"
-                                     src="/public/images/map/naver-map.png"/>
+                            <a id="kakaotalk-sharing-btn" href="javascript:;">
+                                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+                                  alt="카카오톡 공유 보내기 버튼" />
                             </a>
-                            <a href="http://dmaps.kr/2bms8">
-                                <img alt="kakao-map" class="map-icon" id="kakao-map"
-                                     src="/public/images/map/kakao-map.png"/>
-                            </a>
+                              
                             <a href="https://maps.app.goo.gl/jfDxw">
                                 <img alt="google-map" class="map-icon" id="google-map"
                                      src="/public/images/map/google-map.png"/>
@@ -336,6 +333,8 @@
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
+  integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka" crossorigin="anonymous"></script>
 <script src="/public/js/aos.js"></script>
 <script src="/public/js/parallax.min.js"></script>
 <script src="/public/js/ekko-lightbox.min.js"></script>
@@ -358,9 +357,16 @@
     await getArticleList()
 
     await getCommentList()
-  
+
+    await getAppShare()
+    
 })()
+
+
+
 </script>
+
+
 
 </body>
 </html>

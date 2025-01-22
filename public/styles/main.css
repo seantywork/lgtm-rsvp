@@ -610,6 +610,26 @@ pre code {
     margin-left: auto;
 }
 
+.row-story {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: block;
+    text-decoration: none;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+
+}
+
+
+.row-story:hover {
+    background-color: #e5e5e5;
+    cursor: pointer;
+}
+
+
 .row {
     display: -webkit-box;
     display: -ms-flexbox;

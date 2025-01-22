@@ -150,16 +150,31 @@ async function getArticleList(){
         let oe = orderedEntry[i]
 
         let content = `
-            <div class="gift">
-                <img alt="와인셀러" class="img-fluid gift-img gift-selected" src="${oe.primaryMediaName}"/>
-                <div class="btn-group gift-btn-group" role="group">
-                    <button class="btn btn-default gift-btn"
-                            onclick="window.open('/story/r/${oe.id}')">
-                        ${oe.dateMarked}</button>
 
+                <div class="row-story" onclick="window.open('/story/r/${oe.id}')">
+                    <div class="col-md-7 col-sm-12">
+                        <div class="my-3">
+                            <div class="h4">${oe.title}</div>
+                            <ul>
+                                <li>
+                                    <i class="text-muted fas fa-map-marker-alt"></i>
+                                    <span class="pl-2 text-muted">부산 해운대 우동 센텀사이언스 파크 23층</span>
+                                </li>
+                                <li class="pt-2">
+                                    <i class="text-muted far fa-calendar-alt"></i>
+                                    <span class="pl-2 text-muted">2${oe.dateMarked}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-sm-12">
+                        <div class="my-3">
+                            <img alt="Wedding Party" class="img-fluid" src="${oe.primaryMediaName}"/>
+                        </div>
+                    </div>
                 </div>
-            </div>        
-        
+
+
         `
 
         storyList.innerHTML += content

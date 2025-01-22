@@ -131,47 +131,8 @@
                             (만난지 4년+1일 되는날 결혼 = 1463일)
                         </h6>
                     </div>
-                <div class="row">
-                    <div class="col-md-7 col-sm-12">
-                        <div class="my-3">
-                            <div class="h4">웨딩 본식</div>
-                            <ul>
-                                <li>
-                                    <i class="text-muted fas fa-map-marker-alt"></i>
-                                    <span class="pl-2 text-muted">부산 해운대 우동 센텀사이언스 파크 23층</span>
-                                </li>
-                                <li class="pt-2">
-                                    <i class="text-muted far fa-calendar-alt"></i>
-                                    <span class="pl-2 text-muted">2019년 5월 18일, 2:30PM</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-5 col-sm-12">
-                        <div class="my-3">
-                            <img alt="Wedding Party" class="img-fluid" src="/public/images/wedding-party.jpg"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-7 col-sm-12">
-                        <div class="my-3">
-                            <div class="h4">식사</div>
-                            <ul>
-                                <li>
-                                    <i class="text-muted fas fa-map-marker-alt "></i>
-                                    <span class="pl-2 text-muted">부산 해운대 우동 센텀사이언스 파크 지하 1층 더파티 센텀점</span>
-                                </li>
-                                <li class="pt-2">
-                                    <i class="text-muted far fa-calendar-alt "></i>
-                                    <span class="pl-2 text-muted">2019년 5월 18일, 2:30PM - 4:30PM</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-5 col-sm-12">
-                        <div class="my-3"><img alt="Reception" class="img-fluid" src="/public/images/reception.jpg"/></div>
-                    </div>
+                <div id="story-columns">
+
                 </div>
             </div>
         </div>
@@ -235,11 +196,6 @@
                             (아래 선물버튼을 눌러 신랑, 신부에게 예약메시지를 보내세요!)
                         </h6>
                     </div>
-                    <div class="ww-gift">
-                        <div id="story-columns" class="gift-columns">
-                
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -261,19 +217,13 @@
                                   alt="카카오톡 공유 보내기 버튼" />
                             </a>
                               
-                            <a href="https://maps.app.goo.gl/jfDxw">
-                                <img alt="google-map" class="map-icon" id="google-map"
-                                     src="/public/images/map/google-map.png"/>
-                            </a>
                         </div>
                         <div class="col text-center">
                             <label style="font-family: 'Noto Serif KR', serif; font-size: 15px;">
                                 셔틀버스 - 센텀시티역 4번출구앞에서 15분 간격으로 운행
                             </label>
                         </div>
-                        <div class="my-3">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3261.297439052569!2d129.1238775160104!3d35.1741384652207!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356892c2513ecf5d%3A0x7d362ece2091e2f8!2z7IS87YWA7IKs7J207Ja47Iqk7YyM7YGsIOy7qOuypOyFmO2ZgA!5e0!3m2!1sko!2skr!4v1554092125630!5m2!1sko!2skr" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>
-                        </div>
+
                     </div>
                 </div>
 
@@ -286,13 +236,13 @@
                 <div class="container">
                     <div class="col text-center">
                         <h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">축하메시지</h2><br>
-                        <div id="comment-rows"></div>
-                        <br>
                         <div class="row">
-                            <div class="col text-center"><form action="https://github.com/AndersonChoi/wedding-card/blob/master/README.md">
-                                <button class="btn btn-primary btn-submit" type="submit">메시지 남기러 가기</button></form>
+                            <div class="col text-center">
+                                <button class="btn btn-primary btn-submit" type="submit" onclick="location.href='/comment'">메시지 남기러 가기</button>
                             </div>
                         </div>
+                        <div id="comment-rows"></div>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -301,34 +251,7 @@
     </div>
 </div>
 </div>
-<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="giftMailModal" role="dialog"
-     tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">선물하기 - <span id="gift-name"></span></h5>
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">보내는 분 성함</span>
-                    </div>
-                    <input aria-describedby="basic-addon3" class="form-control" id="sender-name" type="text">
-                </div>
-                <div class="input-group">
-                    <textarea aria-label="With textarea" class="form-control" id="sender-message"
-                              placeholder="신랑, 신부에게 선물 예약과 함께 보낼 메시지를 입력해주세요. 이 메시지는 신랑, 신부에게 발송됩니다." rows=4></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" id="reserveGiftButton" type="button">예약</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 <footer></footer>
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

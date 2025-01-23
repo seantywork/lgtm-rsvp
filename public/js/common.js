@@ -158,11 +158,11 @@ async function getArticleList(){
                             <ul>
                                 <li>
                                     <i class="text-muted fas fa-map-marker-alt"></i>
-                                    <span class="pl-2 text-muted">부산 해운대 우동 센텀사이언스 파크 23층</span>
+                                    <span class="pl-2 text-muted">${oe.intro}</span>
                                 </li>
                                 <li class="pt-2">
                                     <i class="text-muted far fa-calendar-alt"></i>
-                                    <span class="pl-2 text-muted">2${oe.dateMarked}</span>
+                                    <span class="pl-2 text-muted">${oe.dateMarked}</span>
                                 </li>
                             </ul>
                         </div>

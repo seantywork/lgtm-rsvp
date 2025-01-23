@@ -17,6 +17,7 @@ type ArticleInfo struct {
 	Id               string `json:"id,omitempty"`
 	Title            string `json:"title"`
 	Content          string `json:"content,omitempty"`
+	Intro            string `json:"intro"`
 	DateMarked       string `json:"dateMarked"`
 	PrimaryMediaName string `json:"primaryMediaName"`
 }
@@ -78,6 +79,15 @@ func UploadStory(c *gin.Context) {
 
 	}
 
+	if a_info.Intro == "" {
+
+		log.Printf("article: upload: needs intro\n")
+
+		c.JSON(http.StatusBadRequest, SERVER_RESP{Status: "error", Reply: "invalid format"})
+
+		return
+	}
+
 	if a_info.DateMarked == "" {
 
 		log.Printf("article upload: needs dateMarked\n")
@@ -100,7 +110,7 @@ func UploadStory(c *gin.Context) {
 
 	new_file_name, _ := pkgutils.GetRandomHex(32)
 
-	err = pkgdb.SaveStory(new_file_name, a_info.Title, a_info.DateMarked, a_info.PrimaryMediaName, a_info.Content)
+	err = pkgdb.SaveStory(new_file_name, a_info.Title, a_info.Intro, a_info.DateMarked, a_info.PrimaryMediaName, a_info.Content)
 
 	if err != nil {
 
@@ -260,6 +270,7 @@ func GetStoryList(c *gin.Context) {
 		article := ArticleInfo{
 			Id:               stories[i].Id,
 			Title:            stories[i].Title,
+			Intro:            stories[i].Intro,
 			DateMarked:       stories[i].DateMarked,
 			PrimaryMediaName: stories[i].PrimaryMediaName,
 		}

@@ -9,12 +9,13 @@ type Story struct {
 	StoryId          int
 	Id               string
 	Title            string
+	Intro            string
 	DateMarked       string
 	PrimaryMediaName string
 	Content          string
 }
 
-func SaveStory(id string, title string, dateMarked string, primaryMediaName string, content string) error {
+func SaveStory(id string, title string, intro string, dateMarked string, primaryMediaName string, content string) error {
 
 	q := `
 	
@@ -22,11 +23,13 @@ func SaveStory(id string, title string, dateMarked string, primaryMediaName stri
 	
 		id,
 		title,
+		intro,
 		date_marked,
 		primary_media_name,
 		content
 	) 
 	VALUES (
+		?,
 		?,
 		?,
 		?,
@@ -39,6 +42,7 @@ func SaveStory(id string, title string, dateMarked string, primaryMediaName stri
 	a := []any{
 		id,
 		title,
+		intro,
 		dateMarked,
 		primaryMediaName,
 		content,
@@ -88,6 +92,7 @@ func GetStoryById(id string) (*Story, error) {
 			&story.StoryId,
 			&story.Id,
 			&story.Title,
+			&story.Intro,
 			&story.DateMarked,
 			&story.PrimaryMediaName,
 			&story.Content,
@@ -147,6 +152,7 @@ func GetStoryByTitle(title string) (*Story, error) {
 			&story.StoryId,
 			&story.Id,
 			&story.Title,
+			&story.Intro,
 			&story.DateMarked,
 			&story.PrimaryMediaName,
 			&story.Content,
@@ -232,6 +238,7 @@ func GetAllStory() ([]Story, error) {
 	SELECT 
 		id,
 		title,
+		intro,
 		date_marked,
 		primary_media_name
 	FROM
@@ -257,6 +264,7 @@ func GetAllStory() ([]Story, error) {
 
 			&story.Id,
 			&story.Title,
+			&story.Intro,
 			&story.DateMarked,
 			&story.PrimaryMediaName,
 		)

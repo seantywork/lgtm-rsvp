@@ -2,6 +2,7 @@
 ARTICLE_INFO = {
     "title": "",
     "content": "",
+    "intro": "",
     "dateMarked": "",
     "primaryMediaName":""
 
@@ -196,6 +197,13 @@ var editor = new EditorJS({
         {
           type: "header",
           data: {
+            text: "INTRO",
+            level: 2
+          }
+        },
+        {
+          type: "header",
+          data: {
             text: "0000-00",
             level: 3
           }
@@ -233,14 +241,15 @@ saveButton.addEventListener('click', async function () {
 
     a_info.title = savedData.blocks[0].data.text
 
-    a_info.dateMarked = savedData.blocks[1].data.text
+    a_info.intro = savedData.blocks[1].data.text
+
+    a_info.dateMarked = savedData.blocks[2].data.text
 
     blen = savedData.blocks.length 
 
     let imagePath = ""
 
     for (let i = 0 ; i < blen; i ++){
-
 
       let b = savedData.blocks[i]
 

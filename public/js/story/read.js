@@ -32,6 +32,7 @@ async function getArticleContent(){
   let title = ""
   let titleIdx = -1
 
+  let introIdx = -1
   let dateMarkedIdx = -1
 
   for(let i = 0; i < blen; i++){
@@ -46,6 +47,13 @@ async function getArticleContent(){
         }
       }
 
+      if(b.data.level == 2){
+        if(introIdx == -1){
+          introIdx = i
+        }
+
+      }
+
       if(b.data.level == 3){
         if(dateMarkedIdx == -1){
           dateMarkedIdx = i
@@ -56,6 +64,7 @@ async function getArticleContent(){
   }
 
   result_data.blocks.splice(dateMarkedIdx,1)
+  result_data.blocks.splice(introIdx, 1)
   result_data.blocks.splice(titleIdx, 1)
   
   let titleEl = document.getElementById("story-title")

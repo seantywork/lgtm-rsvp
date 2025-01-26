@@ -3562,6 +3562,11 @@ tbody.collapse.show {
     width: 100% !important;
 }
 
+.gift-bg {
+    background: url("/public/images/gift/test.gif");
+    background-size: 100% 100%;
+}
+
 .btn-group,
 .btn-group-vertical {
     position: relative;
@@ -10052,6 +10057,7 @@ body {
 .ww-section {
     padding: 100px 0;
 }
+
 
 .btn-primary {
     color: #fff;

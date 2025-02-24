@@ -370,3 +370,13 @@ async function getAppShare(){
       });
 }
 
+
+function copyUrlToClipboard(){
+
+
+    thisUrl = window.location.href
+    
+    navigator.clipboard.writeText(thisUrl);
+
+    alert("url이 클립보드에 복사되었습니다")
+}

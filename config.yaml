@@ -1,6 +1,6 @@
 test: -1
 serveAddr: "0.0.0.0:8080"
-url: "http://192.168.122.91:8080"
+url: "http://192.168.122.93:8080"
 sessionStore: "our-wedding-rsvp"
 db: 
   addr: "data/rsvp.db"

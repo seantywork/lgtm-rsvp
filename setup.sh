@@ -2,7 +2,7 @@
 
 sudo apt update
 
-sudo apt install -y make curl nginx ca-certificates apache2-utils
+sudo apt install -y make curl nginx ca-certificates apache2-utils sqlite3 unzip
 
 sudo snap install --classic certbot 
 

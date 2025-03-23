@@ -9780,7 +9780,7 @@ body {
 
 /* Home Page Style */
 .ww-home-page {
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("/public/images/main-background.jpeg") no-repeat center center;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("/public/images/album/00.jpg") no-repeat center center;
     background-size: cover;
     background-position: 50%;
     height: 100vh;

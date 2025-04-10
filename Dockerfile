@@ -8,7 +8,7 @@ WORKDIR /workspace
 
 RUN apt-get update 
 
-RUN apt-get install -y make build-essential ca-certificates
+RUN apt-get install -y make build-essential ca-certificates sqlite3
 
 COPY --from=golang:1.23.4 /usr/local/go/ /usr/local/go/
 
@@ -21,8 +21,6 @@ RUN make clean
 RUN go clean -modcache
 
 RUN go mod tidy
-
-RUN make vendor
 
 RUN	make
 

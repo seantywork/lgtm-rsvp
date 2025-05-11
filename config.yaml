@@ -1,6 +1,6 @@
 test: -1
 serveAddr: "0.0.0.0:8080"
-url: "http://192.168.122.93:8080"
+url: "http://192.168.122.87:8080"
 sessionStore: "our-wedding-rsvp"
 db: 
   addr: "data/rsvp.db"
@@ -9,3 +9,4 @@ admin:
   useOauth2: false
   id: seantywork@gmail.com
   pw: sample
+giftPage: https://bolder-stew-a1f.notion.site/1f08f36af0df80c28a80cb530b8118b7?pvs=4

@@ -9,5 +9,6 @@ data
 .DS_Store
 *.json
 *.txt
+album.zip
 public/images/album
 public/images/album.zip

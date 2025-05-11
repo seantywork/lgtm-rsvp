@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	pkgglob "our-wedding-rsvp/pkg/glob"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -51,6 +53,13 @@ func InitAPI() error {
 func GetAppKey(c *gin.Context) {
 
 	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: API_JSON.AppKey})
+
+	return
+}
+
+func GetGiftPage(c *gin.Context) {
+
+	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: pkgglob.G_CONF.GiftPage})
 
 	return
 }

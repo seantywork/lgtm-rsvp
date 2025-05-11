@@ -380,3 +380,26 @@ function copyUrlToClipboard(){
 
     alert("url이 클립보드에 복사되었습니다")
 }
+
+
+async function getGiftPage(){
+
+
+    let resp = await fetch("/api/gift", {
+        method: "GET"
+    })
+
+    let result = await resp.json()
+
+    if(result.status != "success"){
+
+        alert("failed to get gift page")
+
+        return
+
+    }
+
+
+    window.open(result.reply, '_blank').focus();
+
+}

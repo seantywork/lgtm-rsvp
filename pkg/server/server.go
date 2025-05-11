@@ -80,7 +80,7 @@ func configureServer(e *gin.Engine) error {
 
 	e.GET("/story/w", getWrite)
 
-	e.GET("/story/w/:storyId/delete", DeleteStory)
+	e.GET("/story/r/:storyId/delete", DeleteStory)
 
 	e.GET("/api/oauth2/google/signin", pkgserverapi.OauthGoogleLogin)
 
@@ -105,6 +105,8 @@ func configureServer(e *gin.Engine) error {
 	e.GET("/api/story/list", pkgserverapi.GetStoryList)
 
 	e.GET("/api/appkey", pkgserverapi.GetAppKey)
+
+	e.GET("/api/gift", pkgserverapi.GetGiftPage)
 
 	return nil
 }

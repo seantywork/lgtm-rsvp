@@ -14,6 +14,7 @@ type Config struct {
 		Id        string `yaml:"id"`
 		Pw        string `yaml:"pw"`
 	} `yaml:"admin"`
+	GiftPage string `yaml:"giftPage"`
 }
 
 var G_CONF *Config

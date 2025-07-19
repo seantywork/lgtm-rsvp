@@ -414,7 +414,7 @@ async function getAppShare(){
         content: {
           title: title,
           imageUrl:
-            `${thisUrl}/${IMAGE_TITLE}`,
+            `${thisUrl}${IMAGE_TITLE}`,
           link: {
             mobileWebUrl: thisUrl,
             webUrl: thisUrl,

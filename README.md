@@ -13,7 +13,7 @@ TCP on Port 80, 443, 22 should be enabled
 
 3. Clone this repository
 
-4. Carefully read and modify config.yaml
+4. Carefully read and modify config.yaml.tmpl and modify name as config.yaml
 
 5. You need to create api.json file
 

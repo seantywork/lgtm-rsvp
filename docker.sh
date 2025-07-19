@@ -25,4 +25,7 @@ podman run -d --restart=always \
     -v ./data:/workspace/data \
     -v ./log:/workspace/log \
     -v ./public:/workspace/public \
+    -v ./api.json:/workspace/api.json \
+    -v ./oauth.json:/workspace/oauth.json \
+    -v ./config.yaml:/workspace/config.yaml \
     localhost/lgtm-rsvp 

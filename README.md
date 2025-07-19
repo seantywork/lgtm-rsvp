@@ -30,7 +30,7 @@ If you set "kakao_share" other than blank string, it means you're going to use K
 
 ```
 
-6. If you choose to use Oauth2, you also need to create oauth.json file,
+6. You also need to create oauth.json file, even if you choose not to use Oauth2
 
 Google how to get it.
 

@@ -9,6 +9,8 @@
 
 2. It is recommended to deploy it on a cloud provider where DDoS protection feature is built-in, e.g. AWS, GCP...
 
+TCP on Port 80, 443, 22 should be enabled
+
 3. Clone this repository
 
 4. Carefully read and modify config.yaml
@@ -68,8 +70,47 @@ All other pictures should be sorted to come after them.
 
 9. Set up reverse proxy and get certificate for your domain
 
+```shell
+# /etc/nginx/nginx.conf
+# modify the line below to have only TLS1.2 <=
+        ssl_protocols  TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
 
-10. Run!
+# use file template at net/rsvp-chal.conf
+# place it at /etc/nginx/conf.d/
+# with domain name changed to yours
+
+sudo systemctl restart nginx
+
+# check if you could reach nginx by your domain name at port 80
+# using `curl http://yourdomain.com`
+
+# if all good
+# then get the certificates on that domain
+
+sudo certbot --nginx --rsa-key-size 4096 --no-redirect 
+
+# after success
+# change the file at /etc/nginx/conf.d/ to net/rsvp.conf with the domain name changed to yours
+
+sudo systemctl restart nginx
+
+```
+
+10. configure podman
+
+```shell
+# /etc/containers/registries.conf
+# add this to the last line
+unqualified-search-registries = ["docker.io"]
+
+# log in
+# with docker ip pw
+podman login
+
+
+```
+
+11. Run!
 
 ```shell
 

@@ -52,11 +52,19 @@ Google how to get it.
 
 ```
 
-7. Place your album folder under ./public directory
+7. Place "album" under public/images/album
 
-It needs to have at least three pictures for title, groom, bride in that order.
+The folder name should be exactly "album"
 
-All other pictures should be sorted to come after them.
+The folder should contain at least three images
+
+- title image
+- groom
+- bride
+
+and needs to be sorted in that exac order.
+
+All other images will be displayed under "Gallery" sector.
 
 8. Set up dependencies
 
@@ -109,21 +117,8 @@ podman login
 
 
 ```
-11. Place "album" under public/images/album
 
-The folder name should be exactly "album".
-
-The folder should contain at least three images
-
-- title image
-- groom
-- bride
-
-and needs to be sorted in that exac order.
-
-All other images will be displayed under "Gallery" sector.
-
-12. Run!
+11. Run!
 
 ```shell
 

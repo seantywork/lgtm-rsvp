@@ -12,17 +12,17 @@ then
 fi
 
 
-if ! podman images | grep -q localhost/our-wedding-rsvp
+if ! podman images | grep -q localhost/lgtm-rsvp
 then 
-    podman build -t our-wedding-rsvp:latest .
+    podman build -t lgtm-rsvp:latest .
 fi
 
 
 podman run -d --restart=always \
-    --name our-wedding-rsvp --network rsvp0 \
+    --name lgtm-rsvp --network rsvp0 \
     --tty \
     -p 8080:8080 \
     -v ./data:/workspace/data \
     -v ./log:/workspace/log \
     -v ./public:/workspace/public \
-    localhost/our-wedding-rsvp 
+    localhost/lgtm-rsvp 

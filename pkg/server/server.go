@@ -1,7 +1,11 @@
 package server
 
 import (
+	"fmt"
+	"os"
 	pkgserverapi "our-wedding-rsvp/pkg/server/api"
+	"path/filepath"
+	"strings"
 
 	pkgauth "our-wedding-rsvp/pkg/auth"
 	pkgglob "our-wedding-rsvp/pkg/glob"
@@ -64,6 +68,44 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 
 func configureServer(e *gin.Engine) error {
 
+	if !strings.HasPrefix(pkgglob.G_CONF.Album.Addr, "public/") {
+		return fmt.Errorf("album addr needs to start with 'public' prefix")
+	}
+
+	albumPath := filepath.Join(pkgglob.G_CONF.Album.Addr, "album")
+
+	if _, err := os.Stat(albumPath); err != nil {
+		return fmt.Errorf("album addr not found: %v", err)
+	}
+
+	de, err := os.ReadDir(albumPath)
+
+	if err != nil {
+		return fmt.Errorf("failed to readdir: %v", err)
+	}
+
+	paths := make([]string, 0)
+
+	delen := len(de)
+
+	if delen < 3 {
+		return fmt.Errorf("at least three images should exist: title, groom, bride")
+	}
+
+	for i := 0; i < delen; i++ {
+
+		if de[i].IsDir() {
+			return fmt.Errorf("album should not contain subdir")
+		}
+
+		path := filepath.Join(albumPath, de[i].Name())
+
+		paths = append(paths, path)
+
+	}
+
+	pkgserverapi.AddImageList(paths)
+
 	e.LoadHTMLGlob("view/*")
 
 	e.Static("/public", "./public")
@@ -103,6 +145,8 @@ func configureServer(e *gin.Engine) error {
 	e.GET("/api/media/download/c/:mediaId", pkgserverapi.DownloadStoryMediaById)
 
 	e.GET("/api/story/list", pkgserverapi.GetStoryList)
+
+	e.GET("/api/image/list", pkgserverapi.GetImageList)
 
 	e.GET("/api/appkey", pkgserverapi.GetAppKey)
 

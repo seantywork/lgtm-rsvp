@@ -154,9 +154,7 @@ async function getArticleContent(){
       console.log("data ready")
 
     },
-//      onChange: function(api, event) {
-//        console.log('something changed', event);
-//      }
+
   })
 
 

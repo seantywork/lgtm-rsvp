@@ -13,6 +13,10 @@ COMMENT = {
 URL = ""
 APPKEY = ""
 
+IMAGE_TITLE = ""
+IMAGE_GROOM = ""
+IMAGE_BRIDE = ""
+
 async function userSignin(){
 
 
@@ -141,7 +145,7 @@ async function getArticleList(){
 
     }
 
-    console.log(orderedEntry)
+
 
     storyList.innerHTML = ""
 
@@ -184,14 +188,67 @@ async function getArticleList(){
   
 }
 
-/*
-                   <button class="btn btn-default gift-btn"
-                            onclick="window.open('/story/r/${oe.id}')">
-                        <i class="fa fa-search"></i></button>                    
-<button class="btn btn-default gift-btn gift-send" data-name="와인셀러"
-                            onclick="alert('다른분에게 예약된 선물입니다.');"><i
-                            class="fa fa-gift"></i></button>
-*/
+
+
+async function getImageList(){
+
+
+    let resp = await fetch("/api/image/list", {
+        method: "GET"
+    })
+
+    let result = await resp.json()
+
+    if(result.status != "success"){
+
+        alert("failed to get comment list")
+
+        return
+
+    }
+
+    let imageList = document.getElementById("image-rows")
+
+    let imageEntry = JSON.parse(result.reply)
+
+    let entrylen = imageEntry.length 
+
+    imageList.innerHTML = ""
+
+    for(let i = 0 ; i < entrylen; i++){
+
+        let ie = imageEntry[i]
+
+        if(IMAGE_TITLE == ""){
+            IMAGE_TITLE = ie.name
+            let homeprops = document.getElementsByClassName("ww-home-page");
+            homeprops[0].style.backgroundImage=`url("/${IMAGE_TITLE}")`
+
+        } else if (IMAGE_GROOM == ""){
+            IMAGE_GROOM = ie.name
+            let g = document.getElementById("couple-groom")
+            g.innerHTML += `
+            <img alt="Groom" class="img-fluid" src="/${IMAGE_GROOM}"/>
+            `
+        } else if (IMAGE_BRIDE == ""){
+            IMAGE_BRIDE = ie.name
+            let b = document.getElementById("couple-bride")
+            b.innerHTML += `
+            <img alt="Bride" class="img-fluid" src="/${IMAGE_BRIDE}"/>
+            `
+        }
+
+        let ieEl = `
+            <div class="card" data-groups="[&quot;party&quot;,&quot;wedding&quot;]">
+                <a data-gallery="ww-gallery" data-toggle="lightbox">
+                    <img alt="Gallery Pic 2" class="img-fluid" src="/${ie.name}"/>
+                </a>
+            </div>
+        `
+
+        imageList.innerHTML += ieEl
+    }
+}
 
 
 async function registerComment(){
@@ -257,7 +314,7 @@ async function registerComment(){
     }
 
 
-    alert("방명록을 성공적으로 남겼습니다: " + result.reply + "\n관리자 확인 후 게시 예정입니다.\n감사합니다 ^^")
+    alert("방명록을 성공적으로 남겼습니다: " + result.reply + "\n확인 후 게시 예정입니다.\n감사합니다 ^^")
 
     location.href = "/"
 
@@ -291,7 +348,7 @@ async function getCommentList(){
     let rawText = ""
     let mdRenderd = ""
 
-    console.log(commentEntry)
+
 
     for(let i = 0 ; i < entrylen; i++){
 
@@ -337,7 +394,7 @@ async function getAppShare(){
         objectType: 'feed',
         content: {
           title: '딸기 치즈 케익',
-          description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
+          description: '#결혼 #윤태훈 #반수야',
           imageUrl:
             'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
           link: {
@@ -346,21 +403,9 @@ async function getAppShare(){
             webUrl: thisUrl,
           },
         },
-        social: {
-          likeCount: 286,
-          commentCount: 45,
-          sharedCount: 845,
-        },
         buttons: [
           {
-            title: '웹으로 보기',
-            link: {
-              mobileWebUrl: thisUrl,
-              webUrl: thisUrl,
-            },
-          },
-          {
-            title: '앱으로 보기',
+            title: '보기',
             link: {
               mobileWebUrl: thisUrl,
               webUrl: thisUrl,

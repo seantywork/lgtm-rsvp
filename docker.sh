@@ -13,9 +13,10 @@ then
 fi
 
 
-podman run --restart=always \
+podman run -d --restart=always \
     --name our-wedding-rsvp --network rsvp0 \
     --tty \
     -p 8080:8080 \
     -v ./data:/workspace/data \
+    -v ./log:/workspace/log \
     localhost/our-wedding-rsvp 

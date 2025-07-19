@@ -8,12 +8,18 @@ import (
 
 	pkgauth "our-wedding-rsvp/pkg/auth"
 	pkgdb "our-wedding-rsvp/pkg/db"
+	pkgglob "our-wedding-rsvp/pkg/glob"
 	pkgserverapi "our-wedding-rsvp/pkg/server/api"
 )
 
 func getIndex(c *gin.Context) {
 
-	c.HTML(200, "index.html", gin.H{})
+	c.HTML(200, "index.html", gin.H{
+		"title":   pkgglob.G_CONF.Title,
+		"groom":   pkgglob.G_CONF.Groom,
+		"bride":   pkgglob.G_CONF.Bride,
+		"comment": pkgglob.G_CONF.Comment,
+	})
 
 }
 
@@ -45,6 +51,7 @@ func getRead(c *gin.Context) {
 	}
 	c.HTML(200, "read.html", gin.H{
 		"article_code": watchId,
+		"title":        pkgglob.G_CONF.Title,
 	})
 
 }
@@ -121,5 +128,7 @@ func DeleteStory(c *gin.Context) {
 
 func GetComment(c *gin.Context) {
 
-	c.HTML(200, "comment.html", gin.H{})
+	c.HTML(200, "comment.html", gin.H{
+		"title": pkgglob.G_CONF.Title,
+	})
 }

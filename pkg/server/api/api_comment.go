@@ -194,7 +194,7 @@ func StartMailer(reterr chan error) {
 
 	_comment = make(chan CommentData)
 
-	f, err := os.OpenFile("mailerr.txt", os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
+	f, err := os.OpenFile("log/mailerr.txt", os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
 
 	if err != nil {
 
@@ -234,8 +234,8 @@ func StartMailer(reterr chan error) {
 func sendMail(commentId string, title string, content string) error {
 
 	var pass = API_JSON.MailPass
-	var from = "seantywork@gmail.com"
-	var to = "seantywork@gmail.com"
+	var from = pkgglob.G_CONF.Admin.Id
+	var to = pkgglob.G_CONF.Admin.Id
 	var smtpHost = "smtp.gmail.com"
 
 	callback := pkgglob.G_CONF.Url + "/api/comment/approve/" + commentId

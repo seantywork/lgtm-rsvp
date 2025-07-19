@@ -15,9 +15,9 @@
 
 5. You need to create api.json file
 
-If you set "google_comment" other than blank string, it means you're going to use Google mail service for user comments, hence Google mail api should be configured accordingly
+If you set "google_comment" other than blank string, it means you're going to use Google mail service for user comments, hence Google mail api should be configured accordingly. The value is Google mail app password.
 
-If you set "kakao_share" other than blank string, it means you're going to use Kakao share button on index page, hence Kakao developer setting should be configured accordingly
+If you set "kakao_share" other than blank string, it means you're going to use Kakao share button on index page, hence Kakao developer setting should be configured accordingly. The value is Kakao developer REST API key.
 
 
 ```json

@@ -6,7 +6,6 @@ import (
 	"os"
 	pkgserverapi "our-wedding-rsvp/pkg/server/api"
 	"path/filepath"
-	"strings"
 
 	pkgauth "our-wedding-rsvp/pkg/auth"
 	pkgglob "our-wedding-rsvp/pkg/glob"
@@ -80,11 +79,7 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 
 func configureServer(e *gin.Engine) error {
 
-	if !strings.HasPrefix(pkgglob.G_CONF.Album.Addr, "public/") {
-		return fmt.Errorf("album addr needs to start with 'public' prefix")
-	}
-
-	albumPath := filepath.Join(pkgglob.G_CONF.Album.Addr, "album")
+	albumPath := "./public/images/album"
 
 	if _, err := os.Stat(albumPath); err != nil {
 		return fmt.Errorf("album addr not found: %v", err)

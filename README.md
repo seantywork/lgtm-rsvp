@@ -109,8 +109,21 @@ podman login
 
 
 ```
+11. Place "album" under public/images/album
 
-11. Run!
+The folder name should be exactly "album".
+
+The folder should contain at least three images
+
+- title image
+- groom
+- bride
+
+and needs to be sorted in that exac order.
+
+All other images will be displayed under "Gallery" sector.
+
+12. Run!
 
 ```shell
 

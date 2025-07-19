@@ -24,4 +24,5 @@ podman run -d --restart=always \
     -p 8080:8080 \
     -v ./data:/workspace/data \
     -v ./log:/workspace/log \
+    -v ./public:/workspace/public
     localhost/our-wedding-rsvp 

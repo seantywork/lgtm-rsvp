@@ -14,9 +14,6 @@ type Config struct {
 		Id        string `yaml:"id"`
 		Pw        string `yaml:"pw"`
 	} `yaml:"admin"`
-	Album struct {
-		Addr string `yaml:"addr"`
-	}
 	Title    string `yaml:"title"`
 	Groom    string `yaml:"groom"`
 	Bride    string `yaml:"bride"`

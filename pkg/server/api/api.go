@@ -98,7 +98,7 @@ func InitAPI() error {
 
 func GetKakaoShare(c *gin.Context) {
 
-	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: API_JSON.KakaoShare})
+	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: pkgglob.G_CONF.Title + ":" + API_JSON.KakaoShare})
 
 	return
 }

@@ -396,8 +396,13 @@ async function getAppShare(){
 
     }
 
+    titleAppkey = result.reply 
 
-    APPKEY = result.reply
+    ta = titleAppkey.split(":")
+
+    let title = ta[0]
+
+    APPKEY = ta[1]
 
     Kakao.init(APPKEY);
 
@@ -407,19 +412,17 @@ async function getAppShare(){
         container: '#kakaotalk-sharing-btn',
         objectType: 'feed',
         content: {
-          title: '딸기 치즈 케익',
-          description: '#결혼 #윤태훈 #반수야',
+          title: title,
           imageUrl:
-            'http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+            `${thisUrl}/${IMAGE_TITLE}`,
           link: {
-            // [내 애플리케이션] > [플랫폼] 에서 등록한 사이트 도메인과 일치해야 함
             mobileWebUrl: thisUrl,
             webUrl: thisUrl,
           },
         },
         buttons: [
           {
-            title: '보기',
+            title: '소식 보기',
             link: {
               mobileWebUrl: thisUrl,
               webUrl: thisUrl,

@@ -223,19 +223,21 @@ async function getImageList(){
             IMAGE_TITLE = ie.name
             let homeprops = document.getElementsByClassName("ww-home-page");
             homeprops[0].style.backgroundImage=`url("/${IMAGE_TITLE}")`
-
+            continue
         } else if (IMAGE_GROOM == ""){
             IMAGE_GROOM = ie.name
             let g = document.getElementById("couple-groom")
             g.innerHTML += `
             <img alt="Groom" class="img-fluid" src="/${IMAGE_GROOM}"/>
             `
+            continue
         } else if (IMAGE_BRIDE == ""){
             IMAGE_BRIDE = ie.name
             let b = document.getElementById("couple-bride")
             b.innerHTML += `
             <img alt="Bride" class="img-fluid" src="/${IMAGE_BRIDE}"/>
             `
+            continue
         }
 
         let ieEl = `

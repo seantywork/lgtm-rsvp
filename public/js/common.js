@@ -323,6 +323,13 @@ async function registerComment(){
 
 async function getCommentList(){
 
+    if(GOOGLE_COMMENT_EL == ""){
+        return
+    }
+
+    let gce = document.getElementById("google-comment")
+
+    gce.innerHTML = GOOGLE_COMMENT_EL
 
     let resp = await fetch("/api/comment/list", {
         method: "GET"
@@ -367,6 +374,13 @@ async function getCommentList(){
 
 async function getAppShare(){
 
+    if(KAKAO_SHARE_EL == ""){
+        return
+    }
+
+    let kse = document.getElementById("gift-shares")
+
+    kse.innerHTML += KAKAO_SHARE_EL
 
     let resp = await fetch("/api/appkey", {
         method: "GET"

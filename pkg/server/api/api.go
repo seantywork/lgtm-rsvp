@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -21,11 +22,41 @@ type SERVER_RESP struct {
 }
 
 type ApiJSON struct {
-	AppKey   string `json:"app_key"`
-	MailPass string `json:"mail_pass"`
+	GoogleComment string `json:"google_comment"`
+	KakaoShare    string `json:"kakao_share"`
 }
 
 var API_JSON ApiJSON
+
+var USE_GOOGLE_COMMENT bool = false
+var USE_KAKAO_SHARE bool = false
+
+var GOOGLE_COMMENT_EL = `
+<div class="ww-section bg-light" id="comment">
+	<div class="ww-photo-gallery">
+		<div class="container">
+			<div class="col text-center">
+				<h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">축하메시지</h2><br>
+				<div class="row">
+					<div class="col text-center">
+						<button class="btn btn-primary btn-submit" type="submit" onclick="location.href='/comment'">메시지 남기러 가기</button>
+					</div>
+				</div>
+				<br>
+				<div id="comment-rows"></div>
+				<br>
+			</div>
+		</div>
+	</div>
+</div>
+`
+
+var KAKAO_SHARE_EL = `
+<a id="kakaotalk-sharing-btn" href="javascript:;">
+	<img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+		alt="카카오톡 공유 보내기 버튼" />
+</a> 
+`
 
 func InitAPI() error {
 
@@ -47,12 +78,27 @@ func InitAPI() error {
 
 	API_JSON = mj
 
+	if API_JSON.GoogleComment != "" {
+		log.Printf("using google comment\n")
+		USE_GOOGLE_COMMENT = true
+	} else {
+		log.Printf("not using google comment\n")
+		GOOGLE_COMMENT_EL = ""
+	}
+
+	if API_JSON.KakaoShare != "" {
+		log.Printf("using kakao share\n")
+		USE_KAKAO_SHARE = true
+	} else {
+		log.Printf("not using kakao share\n")
+		KAKAO_SHARE_EL = ""
+	}
 	return nil
 }
 
-func GetAppKey(c *gin.Context) {
+func GetKakaoShare(c *gin.Context) {
 
-	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: API_JSON.AppKey})
+	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: API_JSON.KakaoShare})
 
 	return
 }

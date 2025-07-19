@@ -1,18 +1,36 @@
+# leave it
 test: -1
+# the actual serving address
 serveAddr: "0.0.0.0:8080"
+# needs to be external endpoint,
+# e.g https://mydomain.com
 url: "http://192.168.122.87:8080"
+# randomized hex string should go here
 sessionStore: "our-wedding-rsvp"
+# leave it
 db: 
   addr: "data/rsvp.db"
   initFile: "init.sql"
+# PLEASE SET useOauth2 = true
+# ID MUST BE YOUR EMAIL
+# EVEN IF YOU DO NOT USE OAUTH2
 admin:
   useOauth2: false
   id: seantywork@gmail.com
   pw: sample
+# the path under which folder named "album" is placed
+# album should contain at least three images
+# for title, groom, bride in that order
 album:
   addr: "public/images"
 title: "Taehoon & Suya"
 groom: "윤태훈"
 bride: "반수야"
 comment: "HAPPILY EVER AFTER"
+message: |
+  long message goes here <br><br>
+  like this <br><br>
+  over <br><br>
+  multiple lines <br><br>
+# external link
 giftPage: "#"

@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"html/template"
 	"os"
 	pkgserverapi "our-wedding-rsvp/pkg/server/api"
 	"path/filepath"
@@ -17,6 +18,14 @@ import (
 func CreateServerFromConfig() (*gin.Engine, error) {
 
 	genserver := gin.Default()
+
+	funcMap := make(template.FuncMap)
+
+	funcMap["HTMLnoesc"] = func(s string) template.HTML {
+		return template.HTML(s)
+	}
+
+	genserver.SetFuncMap(funcMap)
 
 	store := sessions.NewCookieStore([]byte(pkgglob.G_CONF.SessionStore))
 
@@ -44,15 +53,18 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 		return nil, err
 	}
 
-	reterr := make(chan error)
+	if pkgserverapi.USE_GOOGLE_COMMENT {
 
-	go pkgserverapi.StartMailer(reterr)
+		reterr := make(chan error)
 
-	re := <-reterr
+		go pkgserverapi.StartMailer(reterr)
 
-	if re != nil {
+		re := <-reterr
 
-		return nil, err
+		if re != nil {
+
+			return nil, err
+		}
 	}
 
 	err = configureServer(genserver)
@@ -116,8 +128,6 @@ func configureServer(e *gin.Engine) error {
 
 	e.GET("/signout", Logout)
 
-	e.GET("/comment", GetComment)
-
 	e.GET("/story/r/:storyId", getRead)
 
 	e.GET("/story/w", getWrite)
@@ -134,12 +144,6 @@ func configureServer(e *gin.Engine) error {
 
 	e.GET("/api/story/download/:storyId", pkgserverapi.DownloadStoryById)
 
-	e.GET("/api/comment/list", pkgserverapi.GetApprovedComments)
-
-	e.POST("/api/comment/register", pkgserverapi.RegisterComment)
-
-	e.GET("/api/comment/approve/:commentId", pkgserverapi.ApproveComment)
-
 	e.POST("/api/media/upload", pkgserverapi.UploadStoryMedia)
 
 	e.GET("/api/media/download/c/:mediaId", pkgserverapi.DownloadStoryMediaById)
@@ -148,9 +152,23 @@ func configureServer(e *gin.Engine) error {
 
 	e.GET("/api/image/list", pkgserverapi.GetImageList)
 
-	e.GET("/api/appkey", pkgserverapi.GetAppKey)
-
 	e.GET("/api/gift", pkgserverapi.GetGiftPage)
+
+	if pkgserverapi.USE_GOOGLE_COMMENT {
+
+		e.GET("/comment", GetComment)
+
+		e.GET("/api/comment/list", pkgserverapi.GetApprovedComments)
+
+		e.POST("/api/comment/register", pkgserverapi.RegisterComment)
+
+		e.GET("/api/comment/approve/:commentId", pkgserverapi.ApproveComment)
+	}
+
+	if pkgserverapi.USE_KAKAO_SHARE {
+
+		e.GET("/api/appkey", pkgserverapi.GetKakaoShare)
+	}
 
 	return nil
 }

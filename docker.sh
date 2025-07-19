@@ -1,5 +1,10 @@
 #!/bin/bash
 
+mkdir -p data
+
+mkdir -p data/media
+
+mkdir -p log
 
 if ! podman network ls | grep -q rsvp0
 then

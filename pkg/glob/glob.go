@@ -21,6 +21,7 @@ type Config struct {
 	Groom    string `yaml:"groom"`
 	Bride    string `yaml:"bride"`
 	Comment  string `yaml:"comment"`
+	Message  string `yaml:"message"`
 	GiftPage string `yaml:"giftPage"`
 }
 

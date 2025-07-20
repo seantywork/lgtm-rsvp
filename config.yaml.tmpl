@@ -11,13 +11,25 @@ sessionStore: "our-wedding-rsvp"
 db: 
   addr: "data/rsvp.db"
   initFile: "init.sql"
-# PLEASE SET useOauth2 = true
+# USE OAUTH IN PRODUCTION!!!
 # ID MUST BE YOUR EMAIL
 # EVEN IF YOU DO NOT USE OAUTH2
+# UNCOMMENTING OAUTH SECTION
+# MEANS USING ONLY OAUTH FOR ADMIN SIGN IN
+# EVEN IF YOU PROVIDED PW
 admin:
-  useOauth2: false
   id: seantywork@gmail.com
   pw: sample
+#  oauth:
+#    clientId:""
+#    projectId: ""
+#    authUri: ""
+#    tokenUri: ""
+#    authProviderX509CertUrl: ""
+#    clientSecret: ""
+#    redirectUris: 
+#      - ""
+#      - ""
 title: "Taehoon & Suya"
 groom: "윤태훈"
 bride: "반수야"
@@ -27,5 +39,14 @@ message: |
   like this <br><br>
   over <br><br>
   multiple lines <br><br>
-# external link
+# external link for gift page, something like PayPal
 giftPage: "#"
+# uncomment googleComment, for using Google mail service for user comments, 
+# hence Google mail api should be configured accordingly. 
+# The value is Google mail app password.
+# uncomment kakaoShar, for using Kakao share button on index page, 
+# hence Kakao developer setting should be configured accordingly. 
+# The value is Kakao developer REST API key.
+api:
+#  googleComment: ""
+#  kakaoShare: ""

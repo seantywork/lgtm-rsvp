@@ -1,11 +1,8 @@
 package api
 
 import (
-	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	pkgglob "our-wedding-rsvp/pkg/glob"
 
@@ -20,13 +17,6 @@ type SERVER_RESP struct {
 	Status string `json:"status"`
 	Reply  string `json:"reply"`
 }
-
-type ApiJSON struct {
-	GoogleComment string `json:"google_comment"`
-	KakaoShare    string `json:"kakao_share"`
-}
-
-var API_JSON ApiJSON
 
 var USE_GOOGLE_COMMENT bool = false
 var USE_KAKAO_SHARE bool = false
@@ -60,25 +50,7 @@ var KAKAO_SHARE_EL = `
 
 func InitAPI() error {
 
-	fileb, err := os.ReadFile("api.json")
-
-	if err != nil {
-
-		return fmt.Errorf("failed to init api: %s", err.Error())
-	}
-
-	mj := ApiJSON{}
-
-	err = json.Unmarshal(fileb, &mj)
-
-	if err != nil {
-
-		return fmt.Errorf("failed to init api: unmarshal: %s", err.Error())
-	}
-
-	API_JSON = mj
-
-	if API_JSON.GoogleComment != "" {
+	if pkgglob.G_CONF.Api.GoogleComment != nil {
 		log.Printf("using google comment\n")
 		USE_GOOGLE_COMMENT = true
 	} else {
@@ -86,7 +58,7 @@ func InitAPI() error {
 		GOOGLE_COMMENT_EL = ""
 	}
 
-	if API_JSON.KakaoShare != "" {
+	if pkgglob.G_CONF.Api.KakaoShare != nil {
 		log.Printf("using kakao share\n")
 		USE_KAKAO_SHARE = true
 	} else {
@@ -98,7 +70,7 @@ func InitAPI() error {
 
 func GetKakaoShare(c *gin.Context) {
 
-	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: pkgglob.G_CONF.Title + ":" + API_JSON.KakaoShare})
+	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: pkgglob.G_CONF.Title + ":" + *pkgglob.G_CONF.Api.KakaoShare})
 
 	return
 }

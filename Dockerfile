@@ -24,4 +24,4 @@ RUN go mod tidy
 
 RUN	make
 
-CMD ["./start.sh"]
+CMD ["./.run.sh"]

@@ -2,12 +2,10 @@ package auth
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 
 	pkgglob "our-wedding-rsvp/pkg/glob"
@@ -41,43 +39,17 @@ var OAUTH_JSON OAuthJSON
 
 var GoogleOauthConfig *oauth2.Config
 
-func InitAuth() error {
-
-	if !USE_OAUTH2 {
-		return nil
-	}
-	oj, err := GetOAuthJSON()
-
-	if err != nil {
-		return err
-	}
-
-	OAUTH_JSON = oj
-
-	GoogleOauthConfig, err = GenerateGoogleOauthConfig()
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func GetOAuthJSON() (OAuthJSON, error) {
 
 	var cj OAuthJSON
 
-	file_byte, err := os.ReadFile("oauth.json")
-
-	if err != nil {
-		return cj, fmt.Errorf("failed to read: oauth.json: %s", err.Error())
-	}
-
-	err = json.Unmarshal(file_byte, &cj)
-
-	if err != nil {
-		return cj, fmt.Errorf("failed to unmarshal oauth json: %s", err.Error())
-	}
+	cj.Web.ClientID = pkgglob.G_CONF.Admin.OAuth.ClientId
+	cj.Web.ProjectID = pkgglob.G_CONF.Admin.OAuth.ProjectId
+	cj.Web.AuthURI = pkgglob.G_CONF.Admin.OAuth.AuthUri
+	cj.Web.TokenURI = pkgglob.G_CONF.Admin.OAuth.TokenUri
+	cj.Web.AuthProviderX509CertURL = pkgglob.G_CONF.Admin.OAuth.AuthProviderX509CertUrl
+	cj.Web.ClientSecret = pkgglob.G_CONF.Admin.OAuth.ClientSecret
+	cj.Web.RedirectUris = pkgglob.G_CONF.Admin.OAuth.RidirectUris
 
 	return cj, nil
 

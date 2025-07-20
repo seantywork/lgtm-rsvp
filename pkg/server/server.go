@@ -36,8 +36,6 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 
 	genserver.Use(sessions.Sessions(pkgglob.G_CONF.SessionStore, store))
 
-	pkgauth.USE_OAUTH2 = pkgglob.G_CONF.Admin.UseOauth2
-
 	err := pkgauth.InitAuth()
 
 	if err != nil {

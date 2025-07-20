@@ -233,7 +233,7 @@ func StartMailer(reterr chan error) {
 
 func sendMail(commentId string, title string, content string) error {
 
-	var pass = API_JSON.GoogleComment
+	var pass = *pkgglob.G_CONF.Api.GoogleComment
 	var from = pkgglob.G_CONF.Admin.Id
 	var to = pkgglob.G_CONF.Admin.Id
 	var smtpHost = "smtp.gmail.com"

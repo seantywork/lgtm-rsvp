@@ -15,44 +15,7 @@ TCP on Port 80, 443, 22 should be enabled
 
 4. Carefully read and modify config.yaml.tmpl and modify name as config.yaml
 
-5. You need to create api.json file
-
-If you set "google_comment" other than blank string, it means you're going to use Google mail service for user comments, hence Google mail api should be configured accordingly. The value is Google mail app password.
-
-If you set "kakao_share" other than blank string, it means you're going to use Kakao share button on index page, hence Kakao developer setting should be configured accordingly. The value is Kakao developer REST API key.
-
-
-```json
-{
-    "google_comment":"",
-    "kakao_share": ""
-}
-
-```
-
-6. You also need to create oauth.json file, even if you choose not to use Oauth2
-
-Google how to get it.
-
-```json
-{
-  "web": {
-    "client_id": "",
-    "project_id": "",
-    "auth_uri": "",
-    "token_uri": "",
-    "auth_provider_x509_cert_url": "",
-    "client_secret": "",
-    "redirect_uris": [
-      "",
-      ""
-    ]
-  }
-}
-
-```
-
-7. Place "album" under public/images/album
+5. Place "album" under public/images/album
 
 The folder name should be exactly "album"
 
@@ -62,11 +25,11 @@ The folder should contain at least three images
 - groom
 - bride
 
-and needs to be sorted in that exac order.
+and needs to be sorted in that exact order.
 
 All other images will be displayed under "Gallery" sector.
 
-8. Set up dependencies
+6. Set up dependencies
 
 ```shell
 
@@ -76,7 +39,7 @@ All other images will be displayed under "Gallery" sector.
 
 ```
 
-9. Set up reverse proxy and get certificate for your domain
+7. Set up reverse proxy and get certificate for your domain
 
 ```shell
 # /etc/nginx/nginx.conf
@@ -104,7 +67,7 @@ sudo systemctl restart nginx
 
 ```
 
-10. configure podman
+8. configure podman
 
 ```shell
 # /etc/containers/registries.conf
@@ -118,14 +81,17 @@ podman login
 
 ```
 
-11. Run!
+9. Run!
 
 ```shell
 
-./docker.sh
+./run.sh
 
 ```
 
+10. Check files under log/* to monitor
+
+Every restart generates a datetime-titled file.
 
 
 ## develop

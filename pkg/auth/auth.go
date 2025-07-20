@@ -18,6 +18,31 @@ var USE_OAUTH2 bool = false
 
 var ADMINS = make(map[string]string)
 
+func InitAuth() error {
+
+	if pkgglob.G_CONF.Admin.OAuth != nil {
+		USE_OAUTH2 = true
+	} else {
+		return nil
+	}
+
+	oj, err := GetOAuthJSON()
+
+	if err != nil {
+		return err
+	}
+
+	OAUTH_JSON = oj
+
+	GoogleOauthConfig, err = GenerateGoogleOauthConfig()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func GenerateStateAuthCookie(c *gin.Context) string {
 
 	state, _ := pkgutils.GetRandomHex(64)

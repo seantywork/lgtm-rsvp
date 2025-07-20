@@ -66,7 +66,9 @@ func getWrite(c *gin.Context) {
 		return
 	}
 
-	c.HTML(200, "write.html", gin.H{})
+	c.HTML(200, "write.html", gin.H{
+		"title": pkgglob.G_CONF.Title,
+	})
 }
 
 func Logout(c *gin.Context) {

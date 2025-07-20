@@ -18,7 +18,7 @@ then
 fi
 
 
-podman run -d --restart=always \
+podman run -d --replace --restart=always \
     --name lgtm-rsvp --network rsvp0 \
     --tty \
     -p 8080:8080 \

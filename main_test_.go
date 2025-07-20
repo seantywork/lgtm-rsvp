@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	pkgdb "our-wedding-rsvp/pkg/db"
-	pkgglob "our-wedding-rsvp/pkg/glob"
+	pkgdb "lgtm-rsvp/pkg/db"
+	pkgglob "lgtm-rsvp/pkg/glob"
 )
 
 func test(tc int) error {

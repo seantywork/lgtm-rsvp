@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	pkgauth "our-wedding-rsvp/pkg/auth"
-	pkgdb "our-wedding-rsvp/pkg/db"
-	pkgglob "our-wedding-rsvp/pkg/glob"
+	pkgauth "lgtm-rsvp/pkg/auth"
+	pkgdb "lgtm-rsvp/pkg/db"
+	pkgglob "lgtm-rsvp/pkg/glob"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"

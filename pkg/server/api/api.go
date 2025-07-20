@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	pkgglob "our-wedding-rsvp/pkg/glob"
+	pkgglob "lgtm-rsvp/pkg/glob"
 
 	"github.com/gin-gonic/gin"
 )

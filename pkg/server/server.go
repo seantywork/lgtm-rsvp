@@ -3,12 +3,12 @@ package server
 import (
 	"fmt"
 	"html/template"
+	pkgserverapi "lgtm-rsvp/pkg/server/api"
 	"os"
-	pkgserverapi "our-wedding-rsvp/pkg/server/api"
 	"path/filepath"
 
-	pkgauth "our-wedding-rsvp/pkg/auth"
-	pkgglob "our-wedding-rsvp/pkg/glob"
+	pkgauth "lgtm-rsvp/pkg/auth"
+	pkgglob "lgtm-rsvp/pkg/glob"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"

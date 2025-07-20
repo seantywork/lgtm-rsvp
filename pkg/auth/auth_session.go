@@ -1,9 +1,9 @@
 package auth
 
 import (
+	pkgdb "lgtm-rsvp/pkg/db"
+	pkgglob "lgtm-rsvp/pkg/glob"
 	"log"
-	pkgdb "our-wedding-rsvp/pkg/db"
-	pkgglob "our-wedding-rsvp/pkg/glob"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"

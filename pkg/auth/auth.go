@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"log"
 
-	pkgdb "our-wedding-rsvp/pkg/db"
+	pkgdb "lgtm-rsvp/pkg/db"
 
-	pkgglob "our-wedding-rsvp/pkg/glob"
+	pkgglob "lgtm-rsvp/pkg/glob"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 
-	pkgutils "our-wedding-rsvp/pkg/utils"
+	pkgutils "lgtm-rsvp/pkg/utils"
 )
 
 var USE_OAUTH2 bool = false

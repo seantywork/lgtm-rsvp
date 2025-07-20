@@ -9,10 +9,10 @@ import (
 	"os"
 	"time"
 
-	pkgauth "our-wedding-rsvp/pkg/auth"
-	pkgdb "our-wedding-rsvp/pkg/db"
-	pkgglob "our-wedding-rsvp/pkg/glob"
-	pkgutils "our-wedding-rsvp/pkg/utils"
+	pkgauth "lgtm-rsvp/pkg/auth"
+	pkgdb "lgtm-rsvp/pkg/db"
+	pkgglob "lgtm-rsvp/pkg/glob"
+	pkgutils "lgtm-rsvp/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/microcosm-cc/bluemonday"
@@ -240,7 +240,7 @@ func sendMail(commentId string, title string, content string) error {
 
 	callback := pkgglob.G_CONF.Url + "/api/comment/approve/" + commentId
 
-	message := "Subject: our-wedding-rsvp comment approval from [" + title + "]"
+	message := "Subject: lgtm-rsvp comment approval from [" + title + "]"
 
 	message += "\r\n\r\n"
 

@@ -6,10 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	pkgauth "our-wedding-rsvp/pkg/auth"
-	pkgdb "our-wedding-rsvp/pkg/db"
-	pkgglob "our-wedding-rsvp/pkg/glob"
-	pkgserverapi "our-wedding-rsvp/pkg/server/api"
+	pkgauth "lgtm-rsvp/pkg/auth"
+	pkgdb "lgtm-rsvp/pkg/db"
+	pkgglob "lgtm-rsvp/pkg/glob"
+	pkgserverapi "lgtm-rsvp/pkg/server/api"
 )
 
 func getIndex(c *gin.Context) {

@@ -1,11 +1,11 @@
 package main
 
 import (
+	pkgdb "lgtm-rsvp/pkg/db"
+	pkgglob "lgtm-rsvp/pkg/glob"
+	pkgserver "lgtm-rsvp/pkg/server"
 	"log"
 	"os"
-	pkgdb "our-wedding-rsvp/pkg/db"
-	pkgglob "our-wedding-rsvp/pkg/glob"
-	pkgserver "our-wedding-rsvp/pkg/server"
 )
 
 func main() {

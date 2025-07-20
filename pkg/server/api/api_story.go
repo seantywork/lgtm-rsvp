@@ -8,9 +8,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	pkgauth "our-wedding-rsvp/pkg/auth"
-	pkgdb "our-wedding-rsvp/pkg/db"
-	pkgutils "our-wedding-rsvp/pkg/utils"
+	pkgauth "lgtm-rsvp/pkg/auth"
+	pkgdb "lgtm-rsvp/pkg/db"
+	pkgutils "lgtm-rsvp/pkg/utils"
 )
 
 type ArticleInfo struct {

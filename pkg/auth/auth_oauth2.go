@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	pkgglob "our-wedding-rsvp/pkg/glob"
+	pkgglob "lgtm-rsvp/pkg/glob"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"

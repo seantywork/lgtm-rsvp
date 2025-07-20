@@ -1,4 +1,4 @@
-module our-wedding-rsvp
+module lgtm-rsvp
 
 go 1.23.2
 

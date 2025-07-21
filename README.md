@@ -7,9 +7,9 @@
 
 1. You do need your own domain name to point to the server
 
-2. It is recommended to deploy it on a cloud provider where DDoS protection feature is built-in, e.g. AWS, GCP...
+2. It is recommended to deploy it on a cloud provider where DDoS protection feature is built-in, e.g. AWS, GCP... 
 
-TCP on Port 80, 443, 22 should be enabled
+TCP on Port 80, 443, 22 should be allowd
 
 3. Clone this repository
 
@@ -93,6 +93,25 @@ podman login
 
 Every restart generates a datetime-titled file.
 
+
+## admin features
+
+### sign in as admin
+
+- $url/signin
+
+### write your own story
+
+- $url/story/w
+
+### delete story
+
+- $url/r/$storyhash/delete
+
+
+### sign out
+
+- $url/signout
 
 ## develop
 

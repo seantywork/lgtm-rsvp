@@ -1,5 +1,7 @@
 # lgtm-rsvp
 
+![sample](sample.gif)
+
 # how to
 
 ## deploy
@@ -116,3 +118,7 @@ Every restart generates a datetime-titled file.
 ## develop
 
 
+
+## thanks to
+
+[AndersonChoi](https://github.com/AndersonChoi/wedding-card)

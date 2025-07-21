@@ -15,13 +15,13 @@ import (
 func getIndex(c *gin.Context) {
 
 	c.HTML(200, "index.html", gin.H{
-		"title":             pkgglob.G_CONF.Title,
-		"groom":             pkgglob.G_CONF.Groom,
-		"bride":             pkgglob.G_CONF.Bride,
-		"comment":           pkgglob.G_CONF.Comment,
-		"message":           pkgglob.G_CONF.Message,
-		"google_comment_el": pkgserverapi.GOOGLE_COMMENT_EL,
-		"kakao_share_el":    pkgserverapi.KAKAO_SHARE_EL,
+		"title":            pkgglob.G_CONF.Title,
+		"groom":            pkgglob.G_CONF.Groom,
+		"bride":            pkgglob.G_CONF.Bride,
+		"comment":          pkgglob.G_CONF.Comment,
+		"message":          pkgglob.G_CONF.Message,
+		"google_comment_y": pkgserverapi.GOOGLE_COMMENT_Y,
+		"kakao_share_y":    pkgserverapi.KAKAO_SHARE_Y,
 	})
 
 }

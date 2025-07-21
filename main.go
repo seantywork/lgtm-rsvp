@@ -31,25 +31,6 @@ func main() {
 
 	log.Printf("server running at: %s\n", pkgglob.G_CONF.ServeAddr)
 
-	if pkgglob.G_CONF.Test > -1 {
-
-		log.Printf("test mode: case: %d\n", pkgglob.G_CONF.Test)
-
-		if err := test(pkgglob.G_CONF.Test); err != nil {
-
-			log.Printf("test failed: %v\n", err)
-
-			os.Exit(-1)
-
-		} else {
-
-			log.Printf("test success\n")
-		}
-
-		os.Exit(0)
-
-	}
-
 	err = pkgdb.OpenDB(pkgglob.G_CONF.Db.Addr)
 
 	if err != nil {

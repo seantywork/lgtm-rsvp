@@ -21,32 +21,9 @@ type SERVER_RESP struct {
 var USE_GOOGLE_COMMENT bool = false
 var USE_KAKAO_SHARE bool = false
 
-var GOOGLE_COMMENT_EL = `
-<div class="ww-section bg-light" id="comment">
-	<div class="ww-photo-gallery">
-		<div class="container">
-			<div class="col text-center">
-				<h2 class="h1 text-center pb-3 ww-title" style="font-family: 'Noto Serif KR', serif;">축하메시지</h2><br>
-				<div class="row">
-					<div class="col text-center">
-						<button class="btn btn-primary btn-submit" type="submit" onclick="location.href='/comment'">메시지 남기러 가기</button>
-					</div>
-				</div>
-				<br>
-				<div id="comment-rows"></div>
-				<br>
-			</div>
-		</div>
-	</div>
-</div>
-`
+var GOOGLE_COMMENT_Y = "y"
 
-var KAKAO_SHARE_EL = `
-<a id="kakaotalk-sharing-btn" href="javascript:;">
-	<img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-		alt="카카오톡 공유 보내기 버튼" />
-</a> 
-`
+var KAKAO_SHARE_Y = "y"
 
 func InitAPI() error {
 
@@ -55,7 +32,7 @@ func InitAPI() error {
 		USE_GOOGLE_COMMENT = true
 	} else {
 		log.Printf("not using google comment\n")
-		GOOGLE_COMMENT_EL = ""
+		GOOGLE_COMMENT_Y = ""
 	}
 
 	if pkgglob.G_CONF.Api.KakaoShare != nil {
@@ -63,7 +40,7 @@ func InitAPI() error {
 		USE_KAKAO_SHARE = true
 	} else {
 		log.Printf("not using kakao share\n")
-		KAKAO_SHARE_EL = ""
+		KAKAO_SHARE_Y = ""
 	}
 	return nil
 }

@@ -4,7 +4,12 @@
 
 # how to
 
-## deploy
+## deploy 
+
+1. You need your own domain name to point to the server
+
+
+## deploy - the harder way
 
 
 1. You do need your own domain name to point to the server

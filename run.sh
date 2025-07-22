@@ -1,29 +1,22 @@
 #!/bin/bash
 
+
 mkdir -p data
 
 mkdir -p data/media
 
 mkdir -p log
 
-if ! podman network ls | grep -q rsvp0
+
+if [  ! -f "data/rsvp.db" ]
 then
-    podman network create --driver=bridge rsvp0
+
+    sqlite3 data/rsvp.db "VACUUM;"
+
 fi
 
+datestr=$(date '+%Y-%m-%d-%H-%M-%S')
 
-if ! podman images | grep -q localhost/lgtm-rsvp
-then 
-    podman build -t lgtm-rsvp:latest .
-fi
+./rsvp.out >> "log/$datestr" 2>&1
 
 
-podman run -d --replace --restart=always \
-    --name lgtm-rsvp --network rsvp0 \
-    --tty \
-    -p 8080:8080 \
-    -v ./data:/workspace/data \
-    -v ./log:/workspace/log \
-    -v ./public:/workspace/public \
-    -v ./config.yaml:/workspace/config.yaml \
-    localhost/lgtm-rsvp 

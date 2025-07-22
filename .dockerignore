@@ -1,4 +1,6 @@
 data
 log
-public
+public/images/album
 config.yaml
+*.zip
+*.tar.gz

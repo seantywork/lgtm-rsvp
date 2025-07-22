@@ -4,13 +4,13 @@
 
 # how to
 
-## deploy 
+## deploy - the easy and cheap way
 
-1. You need your own domain name to point to the server
+- coming soon
 
+[Video Tutorial](#)
 
-## deploy - the harder way
-
+## deploy - the harder and expensive way
 
 1. You do need your own domain name to point to the server
 
@@ -96,9 +96,6 @@ podman login
 
 ```
 
-10. Check files under log/* to monitor
-
-Every restart generates a datetime-titled file.
 
 
 ## admin features

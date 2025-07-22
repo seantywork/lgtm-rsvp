@@ -4,7 +4,6 @@ mkdir -p data
 
 mkdir -p data/media
 
-mkdir -p log
 
 if ! podman network ls | grep -q rsvp0
 then
@@ -23,7 +22,6 @@ podman run -d --replace --restart=always \
     --tty \
     -p 8080:8080 \
     -v ./data:/workspace/data \
-    -v ./log:/workspace/log \
     -v ./public/images/album:/workspace/public/images/album \
     -v ./config.yaml:/workspace/config.yaml \
     localhost/lgtm-rsvp 

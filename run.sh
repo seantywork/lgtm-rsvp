@@ -5,8 +5,6 @@ mkdir -p data
 
 mkdir -p data/media
 
-mkdir -p log
-
 
 if [  ! -f "data/rsvp.db" ]
 then
@@ -15,8 +13,6 @@ then
 
 fi
 
-datestr=$(date '+%Y-%m-%d-%H-%M-%S')
-
-./rsvp.out >> "log/$datestr" 2>&1
+./rsvp.out
 
 

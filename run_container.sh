@@ -23,5 +23,5 @@ podman run -d --replace --restart=always \
     -p 8080:8080 \
     -v ./data:/workspace/data \
     -v ./public/images/album:/workspace/public/images/album \
-    -v ./config.yaml:/workspace/config.yaml \
+    -v ./config:/workspace/config \
     localhost/lgtm-rsvp 

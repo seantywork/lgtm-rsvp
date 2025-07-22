@@ -36,6 +36,8 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 
 	genserver.Use(sessions.Sessions(pkgglob.G_CONF.SessionStore, store))
 
+	genserver.SetTrustedProxies(nil)
+
 	err := pkgauth.InitAuth()
 
 	if err != nil {
@@ -60,7 +62,7 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 
 		if re != nil {
 
-			return nil, err
+			return nil, re
 		}
 	}
 

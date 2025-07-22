@@ -194,7 +194,7 @@ func StartMailer(reterr chan error) {
 
 	_comment = make(chan CommentData)
 
-	f, err := os.OpenFile("log/mailerr.txt", os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
+	f, err := os.OpenFile("data/mailerr.txt", os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
 
 	if err != nil {
 

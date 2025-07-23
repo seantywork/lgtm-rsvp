@@ -34,3 +34,19 @@ type Config struct {
 }
 
 var G_CONF *Config
+
+var G_CONFIG_PATH = "config/config.yaml"
+
+var G_MEDIA_PATH = "data/media/"
+
+var G_MAIL_ERR_PATH = "data/comment-list.json"
+
+var G_ALBUM_PATH = "public/images/album"
+
+var G_DB_MYSQL_PREFIX = "mysql://"
+
+var G_DB_CA_CERT = "data/server-ca.pem"
+var G_DB_CLIENT_CERT = "data/client-cert.pem"
+var G_DB_CLIENT_KEY = "data/client-key.pem"
+
+var G_COMMENT_LIST_PATH = "comment-list.json"

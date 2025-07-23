@@ -25,10 +25,12 @@ type CommentInfo struct {
 	Content string `json:"content"`
 }
 
+type CommntDataList []CommentData
+
 type CommentData struct {
-	CommentId string
-	Title     string
-	Content   string
+	CommentId string `json:"commentid"`
+	Title     string `json:"title"`
+	Content   string `json:"content"`
 }
 
 func GetApprovedComments(c *gin.Context) {
@@ -194,19 +196,6 @@ func StartMailer(reterr chan error) {
 
 	_comment = make(chan CommentData)
 
-	f, err := os.OpenFile("data/mailerr.txt", os.O_APPEND|os.O_RDWR|os.O_CREATE, 0644)
-
-	if err != nil {
-
-		reterr <- fmt.Errorf("failed to create mailerr.txt")
-
-		return
-	}
-
-	reterr <- nil
-
-	defer f.Close()
-
 	for {
 
 		c := <-_comment
@@ -215,12 +204,13 @@ func StartMailer(reterr chan error) {
 
 		if err != nil {
 
-			msg := "==============================\n"
-			msg += "id: " + c.CommentId + "\n"
-			msg += "title: " + c.Title + "\n"
-			msg += "content: " + c.Content + "\n\n"
+			err = writeMailErr(c)
 
-			f.Write([]byte(msg))
+			if err != nil {
+				log.Printf("CRIT: failed to write mail err\n")
+				fmt.Println(c)
+				log.Printf("------------------------------\n")
+			}
 
 			log.Printf("send mail failed: %s\n", c.CommentId)
 		} else {
@@ -261,4 +251,39 @@ func sendMail(commentId string, title string, content string) error {
 	}
 
 	return nil
+}
+
+func writeMailErr(c CommentData) error {
+
+	f, err := os.ReadFile(pkgglob.G_MAIL_ERR_PATH)
+
+	if err != nil {
+		return fmt.Errorf("failed to read mail err path: %v", err)
+	}
+
+	errCommData := make(CommntDataList, 0)
+
+	err = json.Unmarshal(f, &errCommData)
+
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal mail err: %v", err)
+	}
+
+	errCommData = append(errCommData, c)
+
+	eb, err := json.Marshal(errCommData)
+
+	if err != nil {
+		return fmt.Errorf("failed to marshal mail err: %v", err)
+	}
+
+	err = os.WriteFile(pkgglob.G_MAIL_ERR_PATH, eb, 0644)
+
+	if err != nil {
+		fmt.Println(string(eb))
+		return fmt.Errorf("failed to write mail err: %v", err)
+	}
+
+	return nil
+
 }

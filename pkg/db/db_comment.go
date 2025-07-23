@@ -22,6 +22,7 @@ func ListApprovedComments() ([]Comment, error) {
 	q := `
 	
 	SELECT
+		id,
 		title,
 		content,
 		timestamp_registered
@@ -49,6 +50,7 @@ func ListApprovedComments() ([]Comment, error) {
 		comment := Comment{}
 
 		err = res.Scan(
+			&comment.Id,
 			&comment.Title,
 			&comment.Content,
 			&comment.TimestampRegistered,
@@ -158,7 +160,7 @@ func RegisterComment(id string, title string, content string, tr string) error {
 
 	if err != nil {
 
-		return fmt.Errorf("faield to register comment: %v", err)
+		return fmt.Errorf("failed to register comment: %v", err)
 	}
 
 	return nil
@@ -210,6 +212,46 @@ func ApproveComment(id string, ta string) error {
 	if err != nil {
 
 		return fmt.Errorf("faield to approve comment: %v", err)
+	}
+
+	return nil
+}
+
+func DisapproveCommentByTitle(title string) error {
+
+	comments, err := ListApprovedComments()
+
+	if err != nil {
+
+		return fmt.Errorf("disapprove comment: list approved comments: %s", err.Error())
+	}
+
+	for i := 0; i < len(comments); i++ {
+
+		if comments[i].Title == title {
+			fmt.Printf("hit: %s\n", comments[i].Id)
+			q := `
+			
+			UPDATE
+				comment
+			SET
+				timestamp_approved = NULL
+			WHERE
+				id = ?
+
+			`
+			a := []any{
+				comments[i].Id,
+			}
+
+			err = exec(q, a)
+
+			if err != nil {
+
+				return fmt.Errorf("failed to disapprove comment: %v", err)
+			}
+		}
+
 	}
 
 	return nil

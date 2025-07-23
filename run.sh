@@ -13,6 +13,13 @@ then
 
 fi
 
-./rsvp.out
+if [ "$1" == "filelog" ]
+then
+    currdate=$(date '+%Y-%m-%d-%H-%M-%S')
+    ./rsvp.out >> "data/$currdate" 2>&1
+else 
+    ./rsvp.out
+fi
+
 
 

@@ -5,10 +5,12 @@ import (
 	"mime/multipart"
 	"os"
 
+	pkgglob "lgtm-rsvp/pkg/glob"
+
 	"github.com/gin-gonic/gin"
 )
 
-var mediaPath = "./data/media/"
+var mediaPath = pkgglob.G_MEDIA_PATH
 
 func UploadMedia(c *gin.Context, file *multipart.FileHeader, new_filename string) error {
 

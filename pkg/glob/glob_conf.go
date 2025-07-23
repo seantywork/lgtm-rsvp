@@ -10,7 +10,7 @@ func LoadConfig() error {
 
 	conf := Config{}
 
-	file_b, err := os.ReadFile("./config/config.yaml")
+	file_b, err := os.ReadFile(G_CONFIG_PATH)
 
 	if err != nil {
 

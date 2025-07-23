@@ -79,7 +79,7 @@ func CreateServerFromConfig() (*gin.Engine, error) {
 
 func configureServer(e *gin.Engine) error {
 
-	albumPath := "./public/images/album"
+	albumPath := pkgglob.G_ALBUM_PATH
 
 	if _, err := os.Stat(albumPath); err != nil {
 		return fmt.Errorf("album addr not found: %v", err)

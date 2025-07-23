@@ -1,19 +1,28 @@
 package db
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"database/sql"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
+	pkgglob "lgtm-rsvp/pkg/glob"
+
+	"github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 var _db *sql.DB
 
+var _ismyql bool = false
+
 var initiated bool = false
 
-type SqliteMaster struct {
+type SqlMaster struct {
 	TblName string
 }
 
@@ -52,35 +61,121 @@ func exec(query string, args []any) error {
 
 }
 
-func OpenDB(addr string) error {
+func createTLSConf() (*tls.Config, error) {
 
-	db, err := sql.Open("sqlite3", addr)
-
+	rootCertPool := x509.NewCertPool()
+	pem, err := os.ReadFile(pkgglob.G_DB_CA_CERT)
 	if err != nil {
+		return nil, fmt.Errorf("failed to read ca cert: %v", err)
+	}
+	if ok := rootCertPool.AppendCertsFromPEM(pem); !ok {
+		return nil, fmt.Errorf("failed to add pem")
+	}
+	clientCert := make([]tls.Certificate, 0, 1)
 
-		return err
+	certs, err := tls.LoadX509KeyPair(pkgglob.G_DB_CLIENT_CERT, pkgglob.G_DB_CLIENT_KEY)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load key pair")
 	}
 
-	_db = db
+	clientCert = append(clientCert, certs)
+
+	c := tls.Config{
+		RootCAs:            rootCertPool,
+		Certificates:       clientCert,
+		InsecureSkipVerify: true,
+	}
+
+	return &c, nil
+}
+
+func OpenDB(addr string) error {
+
+	if strings.HasPrefix(addr, pkgglob.G_DB_MYSQL_PREFIX) {
+
+		log.Printf("using mysql\n")
+
+		_ismyql = true
+
+		idPwAddrDb := strings.ReplaceAll(addr, pkgglob.G_DB_MYSQL_PREFIX, "")
+
+		li1 := strings.SplitN(idPwAddrDb, "@", 2)
+
+		if len(li1) != 2 {
+			return fmt.Errorf("invalid db info")
+		}
+
+		li2 := strings.SplitN(li1[1], "/", 2)
+
+		if len(li2) != 2 {
+			return fmt.Errorf("invalid db info")
+		}
+
+		connnInfo := fmt.Sprintf("%s@tcp(%s)/%s?tls=custom", li1[0], li2[0], li2[1])
+
+		tc, err := createTLSConf()
+
+		if err != nil {
+			return fmt.Errorf("failed to create tls conf: %v", err)
+		}
+		err = mysql.RegisterTLSConfig("custom", tc)
+
+		if err != nil {
+			return fmt.Errorf("failed to register tls conf: %v", err)
+		}
+		db, err := sql.Open("mysql", connnInfo)
+
+		if err != nil {
+			return fmt.Errorf("failed to open mysql connection: %v", err)
+		}
+
+		_db = db
+
+	} else {
+
+		log.Printf("using sqlite3\n")
+
+		db, err := sql.Open("sqlite3", addr)
+
+		if err != nil {
+
+			return fmt.Errorf("failed to open sqlite3 connection: %v", err)
+		}
+
+		_db = db
+
+	}
 
 	return nil
 }
 
 func Init(initfile string, adminId string, adminPw string) error {
 
-	tables := make([]SqliteMaster, 0)
+	tables := make([]SqlMaster, 0)
 
 	admins := make([]Admin, 0)
 
-	q := `
-	
-	SELECT 
-		tbl_name 
-	FROM 
-		sqlite_master 
-	WHERE 
-		type='table'
-	`
+	q := ""
+
+	if _ismyql {
+		q = `
+		
+		SELECT 
+			table_name 
+		FROM 
+			information_schema.tables
+		`
+	} else {
+		q = `
+		
+		SELECT 
+			tbl_name 
+		FROM 
+			sqlite_master 
+		WHERE 
+			type='table'
+		`
+	}
 
 	a := []any{}
 
@@ -95,7 +190,7 @@ func Init(initfile string, adminId string, adminPw string) error {
 
 	for res.Next() {
 
-		t := SqliteMaster{}
+		t := SqlMaster{}
 
 		err = res.Scan(&t.TblName)
 
@@ -204,7 +299,7 @@ func createFromInitSql(initfile string) error {
 		return fmt.Errorf("failed to init: %v", err)
 	}
 
-	tables := make([]SqliteMaster, 0)
+	tables := make([]SqlMaster, 0)
 
 	q = `
 	
@@ -229,7 +324,7 @@ func createFromInitSql(initfile string) error {
 
 	for res.Next() {
 
-		t := SqliteMaster{}
+		t := SqlMaster{}
 
 		err = res.Scan(&t.TblName)
 

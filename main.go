@@ -1,29 +1,14 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	pkgdb "lgtm-rsvp/pkg/db"
 	pkgglob "lgtm-rsvp/pkg/glob"
 	pkgserver "lgtm-rsvp/pkg/server"
-	pkgserverapi "lgtm-rsvp/pkg/server/api"
-	pkgutils "lgtm-rsvp/pkg/utils"
 	"log"
 	"os"
-	"time"
-
-	"github.com/microcosm-cc/bluemonday"
 )
 
-func printHelp() {
-	fmt.Println("help: print help")
-	fmt.Println("coli y: allow all comment from comment-list.json, force overide")
-	fmt.Println("coli n: block all comments approved from comment-list.json, key is title")
-}
-
-var _doColi bool = false
-var _doColiAct bool = false
-
+/*
 func doColi() error {
 
 	err := pkgdb.OpenDB(pkgglob.G_CONF.Db.Addr)
@@ -129,6 +114,7 @@ func doColi() error {
 
 	return nil
 }
+*/
 
 func main() {
 
@@ -139,48 +125,6 @@ func main() {
 		log.Printf("failed to load config: %v\n", err)
 
 		os.Exit(-1)
-	}
-
-	if len(os.Args) > 1 {
-
-		if os.Args[1] == "help" {
-			printHelp()
-			os.Exit(0)
-		}
-		if os.Args[1] == "coli" {
-			if len(os.Args) != 3 {
-				fmt.Printf("invalid coli command count: %v\n", os.Args[1:])
-				printHelp()
-				os.Exit(-1)
-			} else if os.Args[2] == "y" {
-				_doColi = true
-				_doColiAct = true
-			} else if os.Args[2] == "n" {
-				_doColi = true
-				_doColiAct = false
-
-			} else {
-				fmt.Printf("invalid command coli: %v\n", os.Args[1:])
-				printHelp()
-				os.Exit(-1)
-			}
-
-		} else {
-			fmt.Printf("invalid command: %v\n", os.Args[1:])
-			printHelp()
-			os.Exit(-1)
-		}
-
-	}
-
-	if _doColi {
-		err := doColi()
-		if err != nil {
-			log.Printf("failed to do comment list action: %v\n", err)
-			os.Exit(-1)
-		} else {
-			os.Exit(0)
-		}
 	}
 
 	srv, err := pkgserver.CreateServerFromConfig()

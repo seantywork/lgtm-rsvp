@@ -1,17 +1,11 @@
 package db
 
 import (
-	"crypto/tls"
-	"crypto/x509"
 	"database/sql"
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
-	pkgglob "lgtm-rsvp/pkg/glob"
-
-	"github.com/go-sql-driver/mysql"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -61,90 +55,18 @@ func exec(query string, args []any) error {
 
 }
 
-func createTLSConf() (*tls.Config, error) {
-
-	rootCertPool := x509.NewCertPool()
-	pem, err := os.ReadFile(pkgglob.G_DB_CA_CERT)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read ca cert: %v", err)
-	}
-	if ok := rootCertPool.AppendCertsFromPEM(pem); !ok {
-		return nil, fmt.Errorf("failed to add pem")
-	}
-	clientCert := make([]tls.Certificate, 0, 1)
-
-	certs, err := tls.LoadX509KeyPair(pkgglob.G_DB_CLIENT_CERT, pkgglob.G_DB_CLIENT_KEY)
-	if err != nil {
-		return nil, fmt.Errorf("failed to load key pair")
-	}
-
-	clientCert = append(clientCert, certs)
-
-	c := tls.Config{
-		RootCAs:            rootCertPool,
-		Certificates:       clientCert,
-		InsecureSkipVerify: true,
-	}
-
-	return &c, nil
-}
-
 func OpenDB(addr string) error {
 
-	if strings.HasPrefix(addr, pkgglob.G_DB_MYSQL_PREFIX) {
+	log.Printf("using sqlite3\n")
 
-		log.Printf("using mysql\n")
+	db, err := sql.Open("sqlite3", addr)
 
-		_ismyql = true
+	if err != nil {
 
-		idPwAddrDb := strings.ReplaceAll(addr, pkgglob.G_DB_MYSQL_PREFIX, "")
-
-		li1 := strings.SplitN(idPwAddrDb, "@", 2)
-
-		if len(li1) != 2 {
-			return fmt.Errorf("invalid db info")
-		}
-
-		li2 := strings.SplitN(li1[1], "/", 2)
-
-		if len(li2) != 2 {
-			return fmt.Errorf("invalid db info")
-		}
-
-		connnInfo := fmt.Sprintf("%s@tcp(%s)/%s?tls=custom", li1[0], li2[0], li2[1])
-
-		tc, err := createTLSConf()
-
-		if err != nil {
-			return fmt.Errorf("failed to create tls conf: %v", err)
-		}
-		err = mysql.RegisterTLSConfig("custom", tc)
-
-		if err != nil {
-			return fmt.Errorf("failed to register tls conf: %v", err)
-		}
-		db, err := sql.Open("mysql", connnInfo)
-
-		if err != nil {
-			return fmt.Errorf("failed to open mysql connection: %v", err)
-		}
-
-		_db = db
-
-	} else {
-
-		log.Printf("using sqlite3\n")
-
-		db, err := sql.Open("sqlite3", addr)
-
-		if err != nil {
-
-			return fmt.Errorf("failed to open sqlite3 connection: %v", err)
-		}
-
-		_db = db
-
+		return fmt.Errorf("failed to open sqlite3 connection: %v", err)
 	}
+
+	_db = db
 
 	return nil
 }

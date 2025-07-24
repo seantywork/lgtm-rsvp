@@ -24,4 +24,5 @@ RUN go mod tidy
 
 RUN	make
 
-CMD ["./run.sh"]
+ENTRYPOINT ["/bin/bash", "./run.sh"]
+CMD [""]

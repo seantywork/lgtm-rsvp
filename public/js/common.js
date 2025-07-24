@@ -217,14 +217,13 @@ async function getImageList(){
 
     for(let i = 0 ; i < entrylen; i++){
 
+        if(i == 0){
+            continue
+        }
+
         let ie = imageEntry[i]
 
-        if(IMAGE_TITLE == ""){
-            IMAGE_TITLE = ie.name
-            let homeprops = document.getElementsByClassName("ww-home-page");
-            homeprops[0].style.backgroundImage=`url("/${IMAGE_TITLE}")`
-            continue
-        } else if (IMAGE_GROOM == ""){
+        if (IMAGE_GROOM == ""){
             IMAGE_GROOM = ie.name
             let g = document.getElementById("couple-groom")
             g.innerHTML += `
@@ -319,6 +318,66 @@ async function registerComment(){
     alert("방명록을 성공적으로 남겼습니다: " + result.reply + "\n확인 후 게시 예정입니다.\n감사합니다 ^^")
 
     location.href = "/"
+
+}
+
+async function registerCommentSudo(){
+
+
+
+    let cmd = document.getElementById("comment-sudo-cmd").value 
+
+    if(cmd == ""){
+  
+        alert("specify cmd")
+    
+        return
+    
+    }
+
+    let file = document.getElementById("comment-sudo-file")
+
+    const form = new FormData()
+
+    form.append("file", file.files[0]);
+
+    if(cmd == "allow"){
+        let resp = await fetch("/api/comment/sudo/allow", {
+                body: form,
+                method: "POST"
+        })
+
+        console.log(resp)
+
+        let resp_json = await resp.json()
+
+        if(resp_json.status != "success"){
+            alert("failed to handle allow command")
+            return
+        } 
+
+        alert("successfully handled allow command: \n" + resp_json.reply)
+
+    } else if (cmd == "block") {
+        let resp = await fetch("/api/comment/sudo/block", {
+                body: form,
+                method: "POST"
+        })
+
+        let resp_json = await resp.json()
+
+        if(resp_json.status != "success"){
+            alert("failed to handle block command")
+            return
+        }
+
+        alert("successfully handled block command: \n" + resp_json.reply)
+
+    } else {
+        alert("invalid cmd: " + cmd)
+        return
+    }
+
 
 }
 

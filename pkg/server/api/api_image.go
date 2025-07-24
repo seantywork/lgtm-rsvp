@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var mainImage ImageInfo
+
 var imageList []ImageInfo
 
 type ImageInfo struct {
@@ -20,12 +22,22 @@ func AddImageList(paths []string) {
 
 	for i := 0; i < len(paths); i++ {
 
+		if i == 0 {
+			mainImage = ImageInfo{
+				Name: paths[i],
+			}
+		}
+
 		imageList = append(imageList, ImageInfo{
 			Name: paths[i],
 		})
 
 	}
 
+}
+
+func GetMainImage() ImageInfo {
+	return mainImage
 }
 
 func GetImageList(c *gin.Context) {

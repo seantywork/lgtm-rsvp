@@ -153,11 +153,15 @@ func configureServer(e *gin.Engine) error {
 
 		e.GET("/comment", GetComment)
 
+		e.GET("/comment/sudo", GetCommentSudo)
+
 		e.GET("/api/comment/list", pkgserverapi.GetApprovedComments)
 
 		e.POST("/api/comment/register", pkgserverapi.RegisterComment)
 
 		e.GET("/api/comment/approve/:commentId", pkgserverapi.ApproveComment)
+
+		e.POST("/api/comment/sudo/:cmd", pkgserverapi.CommentSudoCmd)
 	}
 
 	if pkgserverapi.USE_KAKAO_SHARE {

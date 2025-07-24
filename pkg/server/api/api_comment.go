@@ -1,8 +1,10 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/smtp"
@@ -196,6 +198,8 @@ func StartMailer(reterr chan error) {
 
 	_comment = make(chan CommentData)
 
+	reterr <- nil
+
 	for {
 
 		c := <-_comment
@@ -286,4 +290,160 @@ func writeMailErr(c CommentData) error {
 
 	return nil
 
+}
+
+func CommentSudoCmd(c *gin.Context) {
+
+	if !pkgauth.Is0(c, nil, nil) {
+
+		log.Printf("comment sudo cmd: not admin\n")
+
+		c.JSON(http.StatusForbidden, SERVER_RESP{Status: "error", Reply: "you're not admin"})
+
+		return
+
+	}
+
+	cmd := c.Param("cmd")
+
+	file, err := c.FormFile("file")
+
+	if err != nil {
+
+		log.Printf("comment sudo cmd: file not found: %v\n", err)
+		c.JSON(http.StatusForbidden, SERVER_RESP{Status: "error", Reply: "invalid"})
+		return
+	}
+
+	f, err := file.Open()
+
+	if err != nil {
+		log.Printf("comment sudo cmd: file open failed: %v\n", err)
+		c.JSON(http.StatusForbidden, SERVER_RESP{Status: "error", Reply: "invalid"})
+		return
+	}
+
+	var coli CommntDataList
+
+	buf := bytes.NewBuffer(nil)
+
+	if _, err := io.Copy(buf, f); err != nil {
+		log.Printf("comment sudo cmd: file read failed: %v\n", err)
+		c.JSON(http.StatusForbidden, SERVER_RESP{Status: "error", Reply: "invalid"})
+		return
+	}
+
+	err = json.Unmarshal(buf.Bytes(), &coli)
+
+	if err != nil {
+		log.Printf("comment sudo cmd: unmarshal failed: %v\n", err)
+		c.JSON(http.StatusForbidden, SERVER_RESP{Status: "error", Reply: "invalid"})
+		return
+	}
+
+	reply := ""
+
+	if cmd == "allow" {
+
+		reply = allowLogic(coli)
+
+	} else if cmd == "block" {
+
+		reply = blockLogic(coli)
+
+	} else {
+		log.Printf("comment sudo cmd: invalid cmd: %s\n", cmd)
+		c.JSON(http.StatusForbidden, SERVER_RESP{Status: "error", Reply: "invalid"})
+		return
+	}
+
+	log.Printf("comment sudo cmd: success\n")
+	c.JSON(http.StatusOK, SERVER_RESP{Status: "success", Reply: reply})
+	return
+
+}
+
+func allowLogic(coli CommntDataList) string {
+
+	var retstr = ""
+
+	clen := len(coli)
+
+	log.Printf("allowing all data in comment list...\n")
+
+	for i := 0; i < clen; i++ {
+
+		c, err := pkgdb.GetCommentById(coli[i].CommentId)
+
+		id := ""
+		title := ""
+
+		if err != nil {
+			retstr += fmt.Sprintf("  - comment by id doesn't exit: %v\n", err)
+			comment_id, _ := pkgutils.GetRandomHex(32)
+			now := time.Now().UTC()
+			p := bluemonday.UGCPolicy()
+			title_san := p.Sanitize(coli[i].Title)
+			content_san := p.Sanitize(coli[i].Content)
+			if title_san == "" {
+				retstr += fmt.Sprintf("  - register comment: invalid title\n")
+				continue
+			}
+			if content_san == "" {
+				retstr += fmt.Sprintf("  - register comment: invalid content\n")
+				continue
+			}
+			timeRegistered := now.Format("2006-01-02-15-04-05")
+			err = pkgdb.RegisterComment(comment_id, title_san, content_san, timeRegistered)
+			if err != nil {
+				retstr += fmt.Sprintf("  - register comment failed: %v\n", err)
+			} else {
+				retstr += fmt.Sprintf("  - register comment success: %s\n", title_san)
+			}
+			id = comment_id
+			title = title_san
+		} else {
+			id = c.Id
+			title = c.Title
+		}
+
+		now := time.Now().UTC()
+		timeApproved := now.Format("2006-01-02-15-04-05")
+
+		err = pkgdb.ApproveComment(id, timeApproved)
+
+		if err != nil {
+			retstr += fmt.Sprintf("  - approve comment failed: %v\n", err)
+		} else {
+			retstr += fmt.Sprintf("  - approve comment success: %s\n", title)
+		}
+	}
+	log.Printf("allow done\n")
+	fmt.Println(retstr)
+	log.Printf("==========\n")
+
+	return retstr
+}
+
+func blockLogic(coli CommntDataList) string {
+
+	var retstr = ""
+
+	clen := len(coli)
+
+	log.Printf("blocking all data in comment list...\n")
+
+	for i := 0; i < clen; i++ {
+		err := pkgdb.DisapproveCommentByTitle(coli[i].Title)
+		if err != nil {
+			retstr += fmt.Sprintf("  - disapprove by title failed: %v\n", err)
+		} else {
+			retstr += fmt.Sprintf("  - disapprove by title success: %s\n", coli[i].Title)
+		}
+
+	}
+	log.Printf("blocking done\n")
+	fmt.Println(retstr)
+	log.Printf("==========\n")
+	return retstr
 }

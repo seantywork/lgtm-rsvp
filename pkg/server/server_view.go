@@ -14,7 +14,10 @@ import (
 
 func getIndex(c *gin.Context) {
 
+	miName := pkgserverapi.GetMainImage().Name
+
 	c.HTML(200, "index.html", gin.H{
+		"main_image":       miName,
 		"title":            pkgglob.G_CONF.Title,
 		"groom":            pkgglob.G_CONF.Groom,
 		"bride":            pkgglob.G_CONF.Bride,
@@ -134,6 +137,23 @@ func DeleteStory(c *gin.Context) {
 func GetComment(c *gin.Context) {
 
 	c.HTML(200, "comment.html", gin.H{
+		"title": pkgglob.G_CONF.Title,
+	})
+}
+
+func GetCommentSudo(c *gin.Context) {
+
+	if !pkgauth.Is0(c, nil, nil) {
+
+		log.Printf("comment sudo: not allowed\n")
+
+		c.JSON(http.StatusBadRequest, pkgserverapi.SERVER_RESP{Status: "error", Reply: "invalid"})
+
+		return
+
+	}
+
+	c.HTML(200, "comment_sudo.html", gin.H{
 		"title": pkgglob.G_CONF.Title,
 	})
 }

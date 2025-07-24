@@ -4,7 +4,7 @@
 
 # how to
 
-## deploy - the easy and cheap way
+## deploy - the easy and cheap way (recommended)
 
 - coming soon
 
@@ -12,11 +12,14 @@
 
 ## deploy - the harder and expensive way
 
+
 1. You do need your own domain name to point to the server
 
 2. It is recommended to deploy it on a cloud provider where DDoS protection feature is built-in, e.g. AWS, GCP... 
 
-TCP on Port 80, 443, 22 should be allowd
+```shell
+        TCP on Port 80, 443, 22 should be allowed
+```
 
 3. Clone this repository
 
@@ -24,17 +27,20 @@ TCP on Port 80, 443, 22 should be allowd
 
 5. Place "album" under public/images/album
 
-The folder name should be exactly "album"
+```shell
+        The folder name should be exactly "album"
 
-The folder should contain at least three images
+        The folder should contain at least three images
 
-- title image
-- groom
-- bride
+        - title image
+        - groom
+        - bride
 
-and needs to be sorted in that exact order.
+        and needs to be sorted in that exact order.
 
-All other images will be displayed under "Gallery" sector.
+        All other images will be displayed under "Gallery" sector.
+
+```
 
 6. Set up dependencies
 
@@ -74,7 +80,7 @@ sudo systemctl restart nginx
 
 ```
 
-8. configure podman
+8. Configure podman
 
 ```shell
 # /etc/containers/registries.conf
@@ -92,13 +98,15 @@ podman login
 
 ```shell
 
-./run.sh
+# use `help` arg to find out what's available
+
+./run_container.sh
 
 ```
 
 
 
-## admin features
+## Admin Features
 
 ### sign in as admin
 
@@ -117,9 +125,44 @@ podman login
 
 - $url/signout
 
+### allow or block a list of comments
+
+- $url/comment/sudo
+
+```shell
+        on this page, you can use command `allow` or `block` to specify
+        what action you want to take on a comment-list.json file, whose
+        structure is seen below.
+
+        this is also generated under `data/` directory
+        when there is any failed attempt to send mail
+        when someone posts a comment on the website.
+```
+
+```json
+[
+        {
+                "commentid":"",
+                "title":"",
+                "content":""
+        },
+        {
+                "commentid":"",
+                "title":"",
+                "content":""
+        }
+]
+
+```
+
+
 ## develop
 
-
+- go 1.23+
+- sqlite3
+- build-essential
+- make
+- podman
 
 ## thanks to
 

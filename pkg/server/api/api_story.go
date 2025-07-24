@@ -168,7 +168,17 @@ func UploadStoryMedia(c *gin.Context) {
 
 	}
 
-	file, _ := c.FormFile("file")
+	file, err := c.FormFile("file")
+
+	if err != nil {
+
+		log.Printf("media upload: file not found: %v\n", err)
+
+		c.JSON(http.StatusForbidden, SERVER_RESP{Status: "error", Reply: "invalid"})
+
+		return
+
+	}
 
 	rawMediaType := file.Header.Get("Content-Type")
 
@@ -200,7 +210,7 @@ func UploadStoryMedia(c *gin.Context) {
 
 	file_name = file_name + "." + mediaExt
 
-	err := pkgdb.UploadMedia(c, file, file_name)
+	err = pkgdb.UploadMedia(c, file, file_name)
 
 	if err != nil {
 

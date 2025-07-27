@@ -75,6 +75,7 @@ func GetCommentById(id string) (*Comment, error) {
 	q := `
 	
 	SELECT
+		id,
 		title,
 		content,
 		timestamp_registered
@@ -105,6 +106,7 @@ func GetCommentById(id string) (*Comment, error) {
 		comment := Comment{}
 
 		err = res.Scan(
+			&comment.Id,
 			&comment.Title,
 			&comment.Content,
 			&comment.TimestampRegistered,

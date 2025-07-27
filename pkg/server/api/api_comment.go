@@ -259,18 +259,20 @@ func sendMail(commentId string, title string, content string) error {
 
 func writeMailErr(c CommentData) error {
 
-	f, err := os.ReadFile(pkgglob.G_MAIL_ERR_PATH)
-
-	if err != nil {
-		return fmt.Errorf("failed to read mail err path: %v", err)
-	}
-
 	errCommData := make(CommntDataList, 0)
 
-	err = json.Unmarshal(f, &errCommData)
+	if _, err := os.Stat(pkgglob.G_MAIL_ERR_PATH); err == nil {
+		f, err := os.ReadFile(pkgglob.G_MAIL_ERR_PATH)
 
-	if err != nil {
-		return fmt.Errorf("failed to unmarshal mail err: %v", err)
+		if err != nil {
+			return fmt.Errorf("failed to read mail err path: %v", err)
+		}
+
+		err = json.Unmarshal(f, &errCommData)
+
+		if err != nil {
+			return fmt.Errorf("failed to unmarshal mail err: %v", err)
+		}
 	}
 
 	errCommData = append(errCommData, c)

@@ -94,13 +94,7 @@ func OauthGoogleCallback(c *gin.Context) {
 	}
 
 	if !oauth_struct.VERIFIED_EMAIL {
-		log.Printf("access auth failed: %s\n", err.Error())
-		c.Redirect(302, "/")
-		return
-	}
-
-	if err != nil {
-		log.Printf("access auth failed: %s\n", err.Error())
+		log.Printf("access auth failed: not verified email\n")
 		c.Redirect(302, "/")
 		return
 	}

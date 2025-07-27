@@ -65,7 +65,10 @@ func getRead(c *gin.Context) {
 func getWrite(c *gin.Context) {
 
 	if !pkgauth.Is0(c, nil, nil) {
-		c.HTML(200, "index.html", gin.H{})
+		log.Printf("get write: illegal\n")
+
+		c.JSON(http.StatusBadRequest, pkgserverapi.SERVER_RESP{Status: "error", Reply: "you're not admin"})
+
 		return
 	}
 

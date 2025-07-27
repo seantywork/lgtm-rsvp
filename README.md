@@ -22,11 +22,11 @@
         TCP on Port 80, 443, 22 should be allowed
 ```
 
-3. Clone this repository
+3. Clone this repository with any one of *release* branch
 
 4. Carefully read and modify config.yaml.tmpl and modify name as config.yaml
 
-5. Place "album" under public/images/album
+5. Place "album" under public/images
 
 ```shell
         The folder name should be exactly "album"

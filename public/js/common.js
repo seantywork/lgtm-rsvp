@@ -155,7 +155,7 @@ async function getArticleList(){
 
         let content = `
 
-                <div class="row-story" onclick="window.open('/story/r/${oe.id}')">
+                <div class="row-story" onclick="window.open('/story/r/${oe.id}','_self')">
                     <div class="col-md-7 col-sm-12">
                         <div class="my-3">
                             <div class="h4">${oe.title}</div>
@@ -167,6 +167,10 @@ async function getArticleList(){
                                 <li class="pt-2">
                                     <i class="text-muted far fa-calendar-alt"></i>
                                     <span class="pl-2 text-muted">${oe.dateMarked}</span>
+                                </li>
+                                <li class="pb-2">
+                                    <i class="text-muted far fa-calendar-alt"></i>
+                                    <span class="pl-2 text-muted">(클릭하면 스토리가 보입니다)</span>
                                 </li>
                             </ul>
                         </div>
